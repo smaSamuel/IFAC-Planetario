@@ -1,0 +1,31 @@
+{
+    "name": "web/planetario",
+    "version": "11",
+    "description": "Sistema de agendamento para o planetario do IFAC",
+    "require": {
+        "php": "8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "web\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "samuel",
+            "email": "samuel.oli@proton.me"
+        },
+	{
+	    "name": "rianna"
+	},
+	{
+	    "name": "Lorrany"
+	},
+	{
+        "name": "Kayo"
+	},
+	{
+ 	    "name": "Luiz"
+	}
+    ]
+}
