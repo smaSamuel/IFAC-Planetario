@@ -20,7 +20,7 @@ namespace web\classes\agendamento {
         //Método SetNumVisistantesEsperados()
         public function SetNumVisistantesEsperados($numVisitantesEsperados) {
             if (is_string($numVisitantesEsperados)) { //Verificar se o valor recebido e string
-                intval($numVisitantesEsperados); //Converter para número
+                $numVisitantesEsperados = intval($numVisitantesEsperados); //Converter para número
             }
 
             if ($numVisitantesEsperados > 0 && $numVisitantesEsperados <= 30) {
@@ -59,7 +59,11 @@ namespace web\classes\agendamento {
         public function RemoverCadastroHorario(ClientePessoaJuridica|Administrador $requerente) {
             //Verificar se quem solicitou a alteração e: o reponsavel desse agendamento ou um administrador
             if ($requerente === $this->GetResponsavel() || $requerente instanceof Administrador) {
-                unset($_horario);
+                if ($this->_horario != null) {
+                    unset($this->_horario);
+                } else {
+                    return false;
+                }
             } else {
                 //throw new \InvalidArgumentException('Você não tem autorização para remover essa reserva!');  
                 return false; 
@@ -68,7 +72,7 @@ namespace web\classes\agendamento {
 
         //Método GetMonitorProfessor() 
         public function GetMonitorProfessor() {
-            $dado = $this->_horario->GetDado('professor', MonitorProfessor::class); 
+            $dado = $this->_horario->GetDado('professor'); 
             return $dado->GetNome();
         }//Fim do método GetMonitorProfessor()
 

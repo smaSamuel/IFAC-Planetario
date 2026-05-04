@@ -13,7 +13,7 @@ namespace web\classes\agendamento {
         //  OBJ                 VALOR  
             'horario'                =>  DateTime::class,
             'professor'              =>  MonitorProfessor::class,
-            'Reservado'              =>  ReservaEspaco::class,
+            'reservado'              =>  ReservaEspaco::class,
         ];
 
         private array $_assistentes = [];
@@ -45,14 +45,14 @@ namespace web\classes\agendamento {
 
         //Método AddAssistente()
         public function AddAssistente(MonitorAssistente $assistente, MonitorProfessor $professor) {
-            if ($this->GetMonitorProfessor() === $professor) { //Verifica (na teoria) se esse professor e o reponsavel por esse dia 
+            if ($this->GetDado('professor') === $professor) { //Verifica (na teoria) se esse professor e o reponsavel por esse dia 
                 array_push($this->_assistentes, $assistente);
             }
         }//Fim do método AddAssistente()
 
         //Método RemoverAssistente()
         public function RemoverAssistente(MonitorAssistente $assistente, MonitorProfessor $professor) {
-            if ($this->GetMonitorProfessor() === $professor) { //Verifica (na teoria) se esse professor e o reponsavel por esse dia 
+            if ($this->GetDado('professor') === $professor) { //Verifica (na teoria) se esse professor e o reponsavel por esse dia 
                 foreach ($this->_assistentes as $index => $assistenteAtual) {
                     if ($assistenteAtual === $assistente) {
                         unset($this->_assistentes[$index]);
@@ -67,20 +67,14 @@ namespace web\classes\agendamento {
 
             if ($visitante != null) { //Verifica se e um cliente querendo desmarcar o horario
                 array_diff($this->_visitantes, [$visitante]);
-                } elseif (array_key_exists('Reservado', $this->_dados)) { //Verifica se e uma reserva sendo desfeita
-                    unset($this->_dados['Reservado']);
+                } elseif (array_key_exists('reservado', $this->_dados)) { //Verifica se e uma reserva sendo desfeita
+                    unset($this->_dados['reservado']);
                 return true;    
             } else { //Se não for nem uma das duas
                 return false; //Retornar false
             }
 
         }//Fim do método Desagendar()
-
-        //Método GetMonitorProfessor()
-        private function GetMonitorProfessor() {
-            $professor = 0;
-            return $professor;
-        }//Fim do método GetMonitorProfessor()
 
         //Método GetAssistentes()
         public function GetAssistentes() {

@@ -22,10 +22,3 @@ use web\classes\usuario\monitores\MonitorProfessor;
 
     $cnpj1 = new ClientePessoaJuridica('Meta', '00.142.179/0001-11', 'Meta@gmail.com', '(66) 2575-8921', 'Rua B');
     $cnpj2 = new ClientePessoaJuridica('Meta2', '00.142.179/0001-11', 'Meta@gmail.com', '(66) 2575-8921', 'Rua B');
-
-    $reserva = $cnpj1->ocuparEspaco($horario1);
-    //var_dump($reserva->GetMonitorProfessor());
-    $horarioReserva = $reserva->GetHorario();
-    $professor = $horarioReserva->GetDado('professor');
-    $cnpj1->desocuparEspaco($horario1);
-    var_dump($horarioReserva->GetDado('Reservado'));
