@@ -1,12 +1,19 @@
 <?php
 namespace web\classes\usuario\clientes {
-    
+
+    use web\classes\usuario\Usuario;
+    use DateTime;
+    use web\classes\agendamento\ReservaEspaco;
+    use web\classes\usuario\monitores\MonitorProfessor;
+    use web\classes\agendamento\Horario;
+
     //Classe PessoaJuridica
-    class ClientePessoaJuridica extends Cliente{
+    class ClientePessoaJuridica extends Usuario implements Cliente{
         private $_cnpj;
         private $_tel;
         private $_localizacao;
-        
+        private array $_reservasAtivas = [];
+
         //Método Construct
         public function __construct($nome, $cnpj, $email, $telefone, $localizacao) {
             parent::__construct         ($nome, $email, $telefone);
@@ -22,12 +29,14 @@ namespace web\classes\usuario\clientes {
 
             //Etapa 2: Verificar tamanho
             if (strlen($cnpj) !== 14) {
-                throw new \InvalidArgumentException("CNPJ inválido!");
+                //throw new \InvalidArgumentException("CNPJ inválido!");
+                return false;    
             }
 
             //Etapa 3: Verificar dígitos repetidos
             if (preg_match('/^(\d)\1{13}$/', $cnpj)) {
-                throw new \InvalidArgumentException("CNPJ inválido!");
+                //throw new \InvalidArgumentException("CNPJ inválido!");
+                return false;    
             }
 
             //Etapa 4: Validar primeiro dígito verificador
@@ -40,7 +49,8 @@ namespace web\classes\usuario\clientes {
             $digito1 = $resto < 2 ? 0 : 11 - $resto;
 
             if ((int)$cnpj[12] !== $digito1) {
-                throw new \InvalidArgumentException("CNPJ inválido!");
+                //throw new \InvalidArgumentException("CNPJ inválido!");
+                return false;    
             }
 
             //Validar segundo dígito verificador
@@ -53,8 +63,9 @@ namespace web\classes\usuario\clientes {
             $digito2 = $resto < 2 ? 0 : 11 - $resto;
 
             if ((int)$cnpj[13] !== $digito2) {
-                throw new \InvalidArgumentException("CNPJ inválido!");
-            }
+               // throw new \InvalidArgumentException("CNPJ inválido!");
+                return false;    
+           }
 
             $this->_cnpj = $cnpj;
         } //Fim do Método de ValidarCnpj
@@ -76,20 +87,21 @@ namespace web\classes\usuario\clientes {
             return $this-> _localizacao;
         }//Fim do Método getLocalizacao
 
+        //Método getReservasAtivas
+        public function getReservasAtivas() {
+            return $this->_reservasAtivas;
+        }//Fim do Método getReservasAtivas
+
         //Ações
         //Reservar espaço
-        public function ocuparEspaco() { 
-            /*
-                Implementar método de reservar espaço
-                Vincular uma data
-                Vincular um MonitorProfessor 
-
-            */
-
+        public function ocuparEspaco(Horario $horario, MonitorProfessor $professor = null) { 
+            $reserva = new ReservaEspaco($this, 20, $horario, $professor);
+            array_push($this->_reservasAtivas, $reserva);
+            return $reserva;
         }
         //Desfazer reserva de espaço
-        public function desocuparEspaco() { 
-            return false; 
+        public function desocuparEspaco(Horario $horario) { 
+            $horario->Desagendar();
         }
     }//Fim da classe PessoaJuridica 
 

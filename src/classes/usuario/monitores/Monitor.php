@@ -37,10 +37,10 @@ namespace web\classes\usuario\monitores {
             $cpf = str_replace(['-', '.'], '', $cpf);
 
             // verificar se foi informado o numero exato de digitos
-            if (strlen($cpf) != 11) { throw new \InvalidArgumentException("CPF inválido: $cpf"); }
+            if (strlen($cpf) != 11) { return false; }
         
             // verificar se foi informado uma sequencia de digitos iguais, 111.111.111-11
-            if (preg_match('/(\d)\1{10}/', $cpf)) { throw new \InvalidArgumentException("CPF inválido: $cpf"); }
+            if (preg_match('/(\d)\1{10}/', $cpf)) { return false; }
 
             // Faz o calculo para validar o CPF
             for ($t = 9; $t < 11; $t++) {
@@ -49,7 +49,8 @@ namespace web\classes\usuario\monitores {
                 }
                 $d = ((10 * $d) % 11) % 10;
                 if ($cpf[$c] != $d) {
-                    throw new \InvalidArgumentException("CPF inválido: $cpf"); 
+                    //throw new \InvalidArgumentException("CPF inválido: $cpf"); 
+                return false;    
                 }
             }
             
@@ -66,7 +67,8 @@ namespace web\classes\usuario\monitores {
             if($idade > 17 && $idade < 120) {
                 $this->_idade = $idade;
             } else {
-                throw new \InvalidArgumentException('Voce nao tem a idade minima para se registrar nesse site!');
+                //throw new \InvalidArgumentException('Voce nao tem a idade minima para se registrar nesse site!');
+                return false;    
             }
         }//Fim metodo SetIdade()    
 
@@ -75,7 +77,8 @@ namespace web\classes\usuario\monitores {
             if (is_string($matricula)) {
                 $this->_matricula = $matricula;
             } else {
-                throw new \InvalidArgumentException('Matricula Invalida!');
+                //throw new \InvalidArgumentException('Matricula Invalida!');
+                return false;    
             }
         }//Fim do metodo SetMatricula()
 

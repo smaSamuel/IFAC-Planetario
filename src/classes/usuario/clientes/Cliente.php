@@ -1,13 +1,15 @@
 <?php
 
 namespace web\classes\usuario\clientes {
-    use web\classes\usuario\Usuario;
+    use web\classes\agendamento\Horario;
+    use web\classes\agendamento\ReservaEspaco;
+    use web\classes\usuario\monitores\MonitorProfessor;
 
-    //Classe Cliente
-    abstract class Cliente extends Usuario {
+    //Interface Cliente
+    interface Cliente {
         //Ações de todos os clientes
-        abstract public function ocuparEspaco(); 
-        abstract public function desocuparEspaco(); 
+        public function ocuparEspaco(Horario $horario, MonitorProfessor $professor = null); 
+        public function desocuparEspaco(Horario $horario); 
 
     }
 

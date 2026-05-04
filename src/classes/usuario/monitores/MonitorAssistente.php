@@ -1,11 +1,11 @@
 <?php
 namespace web\classes\usuario\monitores {
+
+    use web\classes\agendamento\Horario;
     use web\classes\agendamento\SolicitacaoAssistencia;
 
     class MonitorAssistente extends Monitor 
     {
-
-        /** @var SolicitarAssistente[] */
         private array $_solicitacao = [];
 
         public function __construct($nome, $cpf, $telefone, $dataNascimento, $matricula, $diasLivres, $email) {
@@ -15,7 +15,6 @@ namespace web\classes\usuario\monitores {
         //Método SetSolicitacaoAssistencia()
         public function SetSolicitacaoAssistencia(SolicitacaoAssistencia $solicitacao) {
             array_push($this->_solicitacao, $solicitacao);
-            var_dump($this->_solicitacao); 
         }//Fim do método SetSolicitacaoAssistencia()
 
         //Método GetSolicitacaoAssistencia()

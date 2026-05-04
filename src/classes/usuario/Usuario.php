@@ -2,11 +2,14 @@
 
 namespace web\classes\usuario {
 
+    use web\classes\agendamento\ReservaEspaco;
+
     //Classe Usuario
     class Usuario {
         private $_nome;
         private $_email;
         private $_telefone;
+        private array $_espacosReservados = [];
 
         //Método __construct()
         public function __construct($nome, $email, $telefone) {
@@ -24,7 +27,8 @@ namespace web\classes\usuario {
             if (is_string($nome) && strlen($nome) > 0 && strlen($nome) < 255) {
                 $this->_nome = $nome;
             } else {
-                throw new \InvalidArgumentException("Nome inválido!"); // Devolver erro
+                //throw new \InvalidArgumentException("Nome inválido!"); // Devolver erro
+                return false;    
             }
         }//Fim do método SetNome()
 
@@ -33,7 +37,8 @@ namespace web\classes\usuario {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->_email = $email;
             } else {
-                throw new \InvalidArgumentException("Email inválido!"); // Devolver erro
+                //throw new \InvalidArgumentException("Email inválido!"); // Devolver erro
+                return false;    
             }
         }//Fim do método
 
@@ -46,9 +51,25 @@ namespace web\classes\usuario {
             if (preg_match($valTel, $telefone)) {
                 $this->_telefone = $telefone;
             } else {
-                throw new \InvalidArgumentException("Número de telefone inválido"); // Devolver erro
+                //throw new \InvalidArgumentException("Número de telefone inválido"); // Devolver erro
+                return false;    
             }
         }//Fim do método SetTelefone()
+
+        //Método AddEspacoReservado()
+        public function AddEspacoReservado(ReservaEspaco $reserva) {
+            array_push($this->_espacosReservados, $reserva);
+        }//Fim do método AddEspacoReservado()
+
+        //Método RemoverEspacoReservado()
+        public function RemoverEspacoReservado(ReservaEspaco $reserva) {
+            foreach ($this->GetReservaEspaco() as $index => $reservaAtual) {
+                if ($reservaAtual === $reserva) {
+                    unset($this->_espacosReservados[$index]);
+                    break;
+                }
+            }
+        }//Fim do método RemoverEspacoReservado()
 
         //Método GetNome()
         public function GetNome() { 
@@ -65,6 +86,9 @@ namespace web\classes\usuario {
             return $this->_telefone;
         }//Fim do método GetTelefone()
 
-        
+        //Método GetReservaEspaco() 
+        public function GetReservaEspaco() {
+            return $this->_espacosReservados;
+        }//Fim do método GetReservaEspaco()
     }
 }

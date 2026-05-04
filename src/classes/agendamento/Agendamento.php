@@ -1,15 +1,18 @@
 <?php
 namespace web\classes\agendamento {
-    interface Agendamento
+    use web\classes\agendamento\Horario;
+    use web\classes\usuario\Administrador;
+    use web\classes\usuario\clientes\ClientePessoaJuridica;
+    use web\classes\usuario\monitores\MonitorProfessor;
+
+    abstract class Agendamento 
     {
+        protected Horario $_horario;
+
         //Método CadastrarHorario()
-        public function CadastrarHorario();
+        public function CadastrarHorario(Horario $horario, MonitorProfessor $professor = null) {        
 
-        //Método AlterarCadastroHorario
-        public function AlterarCadastroHorario();
-
-        //Método RemoverCadastroHorario()
-        public function RemoverCadastroHorario();
+        }
 
     }
     
