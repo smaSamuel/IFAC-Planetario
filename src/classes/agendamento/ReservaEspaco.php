@@ -6,15 +6,13 @@ namespace web\classes\agendamento {
     use web\classes\usuario\monitores\MonitorProfessor;
     use web\classes\agendamento\Horario;
 
-    class ReservaEspaco extends Agendamento {
-        protected Horario $_horario;
+    class ReservaEspaco {
         private $_numVisitantesEsperados; //Como e uma reserva feita por uma instituição os visitantes não precisam ter cadastro 
         private ClientePessoaJuridica $_reponsavel;
-        public function __construct(ClientePessoaJuridica $reponsavel, $numVisitantesEsperados, Horario $horario, MonitorProfessor $professor = null)
+        public function __construct(ClientePessoaJuridica $reponsavel, $numVisitantesEsperados, MonitorProfessor $professor = null)
         {   
             $this->_reponsavel = $reponsavel;
             $this->SetNumVisistantesEsperados($numVisitantesEsperados);
-            $this->CadastrarHorario($horario, $professor);
         }
 
         //Método SetNumVisistantesEsperados()
@@ -30,56 +28,6 @@ namespace web\classes\agendamento {
                 return false;    
             }
         }//Fim do método SetNumVisistantesEsperados()
-
-        //Método CadastrarHorario()
-        public function CadastrarHorario(Horario $horario, MonitorProfessor $professor = null) {
-            $this->_horario = $horario;
-            $this->_horario->SetDado('Reservado', $this);
-
-            if ($professor !== null) { 
-                //Caso a instituição tenha escolhido um professor, alterar na classe horario.
-                $horario->SetDado('Professor', $professor);
-            } 
-        }//Fim do método CadastrarHorario()
-
-        //Método AlterarCadastroHorario
-        public function AlterarCadastroHorario(ClientePessoaJuridica|Administrador $requerente, $obj, $valor) {
-            //Verificar se quem solicitou a alteração e: o reponsavel desse agendamento ou um administrador
-            if ($requerente === $this->GetResponsavel() || $requerente instanceof Administrador) {
-                //Autorizar alterações
-                //Alterar dados
-                $this->_horario->SetDado($obj, $valor);
-            } else {
-                //throw new \InvalidArgumentException('Você não tem autorização para alterar essa reserva!');  
-                return false; 
-            }
-        }//Fim do método CadastrarHorario()
-
-        //Método RemoverCadastroHorario()
-        public function RemoverCadastroHorario(ClientePessoaJuridica|Administrador $requerente) {
-            //Verificar se quem solicitou a alteração e: o reponsavel desse agendamento ou um administrador
-            if ($requerente === $this->GetResponsavel() || $requerente instanceof Administrador) {
-                if ($this->_horario != null) {
-                    unset($this->_horario);
-                } else {
-                    return false;
-                }
-            } else {
-                //throw new \InvalidArgumentException('Você não tem autorização para remover essa reserva!');  
-                return false; 
-            }
-        }//Fim do método CadastrarHorario()
-
-        //Método GetMonitorProfessor() 
-        public function GetMonitorProfessor() {
-            $dado = $this->_horario->GetDado('professor'); 
-            return $dado->GetNome();
-        }//Fim do método GetMonitorProfessor()
-
-        //Método GetHorario()
-        public function GetHorario() {
-            return $this->_horario;
-        }//Fim do método GetHorario()
 
         //Método GetResponsavel()
         public function GetResponsavel() {

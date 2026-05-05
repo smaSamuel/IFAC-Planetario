@@ -95,13 +95,13 @@ namespace web\classes\usuario\clientes {
         //Ações
         //Reservar espaço
         public function ocuparEspaco(Horario $horario, MonitorProfessor $professor = null) { 
-            $reserva = new ReservaEspaco($this, 20, $horario, $professor);
+            $reserva = new ReservaEspaco($this, 20, $professor);
             array_push($this->_reservasAtivas, $reserva);
             return $reserva;
         }
         //Desfazer reserva de espaço
         public function desocuparEspaco(Horario $horario) { 
-            $horario->Desagendar();
+            //$horario->Desagendar();
         }
     }//Fim da classe PessoaJuridica 
 
