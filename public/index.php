@@ -7,6 +7,12 @@ use web\classes\usuario\Administrador;
 use web\classes\usuario\clientes\ClientePessoaJuridica;
 use web\classes\usuario\monitores\MonitorAssistente;
 use web\classes\usuario\monitores\MonitorProfessor;
+use web\repositories\AdministradorRepository;
+
+$dataAtual = new DateTime();
+
+$ad = new AdministradorRepository();
+$ad->AdicionarAdministrador('rafael', '(86) 3338-8592', 'rafael@gmail.com', '204.887.487-80', '2000-02-02');
 
 /*
     $prof1 = new MonitorProfessor('rodrigo', '204.887.487-80', '(86) 3338-8592', '02/08/1998', '20251CRB7203', 'seg', 'rodrigo@gmail.com');
