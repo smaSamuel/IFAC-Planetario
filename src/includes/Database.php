@@ -8,14 +8,17 @@
         private function __construct() {  }
 
         public static function GetBancoDadosInfos() : PDO {
-            $dbhost = getenv('DB_HOST');
-            $dbport = getenv('DB_PORT');
-            $dbname = getenv('DB_NAME');
-            $dsn = "mysql:host=$dbhost;port=$dbport;dbname=$dbname";
-            $dbusername = getenv('DB_USER');
-            $dbpassword = getenv('DB_PASS');
-        
-            if (self::$_pdo === null) {
+            // Verifica se já há conexão com o db
+            if (self::$_pdo === null) { //Se não houver
+                //Retornar as variaveis do ambiente
+                $dbhost = getenv('DB_HOST');
+                $dbport = getenv('DB_PORT');
+                $dbname = getenv('DB_NAME');
+                $dbusername = getenv('DB_USER');
+                $dbpassword = getenv('DB_PASS');
+                
+                $dsn = "mysql:host=$dbhost;port=$dbport;dbname=$dbname;charset=utf8mb4"; 
+                //Crie a conexãp
                 self::$_pdo = new PDO(
                     $dsn,
                     $dbusername,
@@ -24,7 +27,7 @@
                 );
             }
             
-            return self::$_pdo;
+            return self::$_pdo; //Retorne a conexão
         } 
     }
 }
