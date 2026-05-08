@@ -1,19 +1,25 @@
 <?php
 
 namespace web\classes\usuario {
+    use DateTime;
 
     class Administrador {
         private $_nome;
         private $_telefone;
+        private $_idade;
+        private $_dataNascimento;
         private $_email;
         private $_cpf;
+        private $_senha;
 
         //Metodo __construct()
-        function __construct($nome, $telefone, $email, $cpf) {
+        function __construct($nome, $telefone, $email, $cpf, $dataNascimento, $senha) {
             $this->setNome          ($nome);
             $this->setTelefone      ($telefone);
+            $this->SetIdade         ($dataNascimento);
             $this->setEmail         ($email);
             $this->setCPF           ($cpf);
+            $this->setSenha         ($senha);
         }
         //Fim metodo __construct()
 
@@ -24,6 +30,30 @@ namespace web\classes\usuario {
             }
         }
         //Fim metodo setNome()
+
+        //Metodo SetIdade()
+        protected function setIdade($dataNascimento) {
+            $dataNascimentoObj = DateTime::createFromFormat('d/m/Y', $dataNascimento);
+            $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d');
+            $dataAtual = new DateTime();
+            $idade = $dataAtual->diff($dataNascimentoObj);
+            $idade = $idade->y;
+            
+            if($idade > 17 && $idade < 120) {
+                $this->_idade = $idade;
+                $this->_dataNascimento = $dataNascimentoDB;
+            } else {
+                //throw new \InvalidArgumentException('Voce nao tem a idade minima para se registrar nesse site!');
+                return false;    
+            }
+        }//Fim metodo SetIdade()  
+
+        //Método SetSenha() 
+        public function setSenha($senha) {
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+            $this->_senha = $senhaHash;
+        }//Fim do método setSenha()
+
         //Metodo setTelefone()
         public function setTelefone($telefone) {
             $telefone= str_replace(['(', ')', '-', ' ', '/'], '', $telefone);
@@ -66,7 +96,7 @@ namespace web\classes\usuario {
                 }
             }
             
-            $this->_cpf = $cpf;
+            $this->_cpf = hash_hmac('sha256', $cpf, getenv('HASH_SECRET_KEY'));
         }
         //Fim metodo setCPF()
     
@@ -90,11 +120,22 @@ namespace web\classes\usuario {
             return $this->_cpf;
         }
         //Fim metodo getCPF()
-    
+        //Metodo getDataNascimento()
+        public function getDataNascimento(){
+            return $this->_dataNascimento;
+        }
+        //Fim metodo getDataNascimento()
+        //Metodo getIdade()
+        public function getIdade(){
+            return $this->_idade;
+        }
+        //Fim metodo getIdade()
+        //Metodo getSenha()
+        public function getSenha(){
+            return $this->_senha;
+        }
+        //Fim metodo getSenha()
         //Metodo __destruct()
         function __destruct() { }    
     }
-
-    $ad = new Administrador("Rodrigo", '(32) 2463-2512', "eimi2506@uorak.com", '204.887.487-80');
-
 }

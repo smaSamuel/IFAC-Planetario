@@ -12,7 +12,9 @@ use web\repositories\AdministradorRepository;
 $dataAtual = new DateTime();
 
 $ad = new AdministradorRepository();
-$ad->AdicionarAdministrador('rafael', '(86) 3338-8592', 'rafael@gmail.com', '204.887.487-80', '2000-02-02');
+
+//$adm = new Administrador('Rafael', '(86) 3338-8592', 'farael@gmail.com', '204.887.487-80', '02/08/1998', 'senhaforte');
+//$ad->AutorizarAcesso('204.887.487-80', 'senhaforte');
 
 /*
     $prof1 = new MonitorProfessor('rodrigo', '204.887.487-80', '(86) 3338-8592', '02/08/1998', '20251CRB7203', 'seg', 'rodrigo@gmail.com');
