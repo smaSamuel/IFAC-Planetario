@@ -9,23 +9,26 @@ namespace web\classes\usuario\clientes {
     //Classe PessoaFísica
     class ClientePessoaFisica extends Usuario implements Cliente  {
         private $_idade;
+        private $dataNascimento;
         private $_cpf;
 
         //Método Construct
-        public function __construct($nome , $email, $telefone, $dataNascimento, $cpf) {
-            parent::__construct     ($nome, $email, $telefone);
-            $this->setIdade         ($dataNascimento);
+        public function __construct($nome , $email, $telefone, $dataNascimento, $cpf, $senha) {
+            parent::__construct     ($nome, $email, $telefone, $senha);
+            $this->setIdade         ($dataNascimento); //Seta tanto Idade tanto DataNascimento
             $this->setCPF           ($cpf);
         }//Fim do Método Construct
     
         protected function setIdade($dataNascimento) {
             $dataNascimentoObj = DateTime::createFromFormat('d/m/Y', $dataNascimento);
+            $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d');  //Formartar a data para o padrão do banco de dados
             $dataAtual = new DateTime();
             $idade = $dataAtual->diff($dataNascimentoObj);
             $idade = $idade->y;
             
             if($idade > 17 && $idade < 120) {
                 $this->_idade = $idade;
+                $this->dataNascimento = $dataNascimentoDB;
             } else {
                 //throw new \InvalidArgumentException('Voce nao tem a idade minima para se registrar nesse site!');
                 return false;    
@@ -66,6 +69,11 @@ namespace web\classes\usuario\clientes {
         public function GetCPF() { 
             return $this->_cpf; 
         } //Fim do método GetCPF()
+
+        //Método GetDataNascimento()
+        public function GetDataNascimento() { 
+            return $this->dataNascimento; 
+        } //Fim do método GetDataNascimento()
 
         //Ações
         //Agendar horário

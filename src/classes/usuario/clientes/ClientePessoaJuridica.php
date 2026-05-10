@@ -10,13 +10,12 @@ namespace web\classes\usuario\clientes {
     //Classe PessoaJuridica
     class ClientePessoaJuridica extends Usuario implements Cliente{
         private $_cnpj;
-        private $_tel;
         private $_localizacao;
         private array $_reservasAtivas = [];
 
         //Método Construct
-        public function __construct($nome, $cnpj, $email, $telefone, $localizacao) {
-            parent::__construct         ($nome, $email, $telefone);
+        public function __construct($nome, $cnpj, $email, $telefone, $localizacao, $senha) {
+            parent::__construct         ($nome, $email, $telefone, $senha);
             $this-> setCnpj             ($cnpj);
             $this-> setLocalizacao      ($localizacao);
             

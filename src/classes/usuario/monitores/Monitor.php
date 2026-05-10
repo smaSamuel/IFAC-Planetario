@@ -17,19 +17,17 @@ namespace web\classes\usuario\monitores {
         private $_cpf;
         private $_idade;
         private $_matricula;
-        private array $_diasLivres = [];
-        private array $_visitacoes = [];
+        private $_dataNascimento;
         private funcaoMonitor $_funcao;
 
         //Método __construct()
-        public function __construct($nome, $cpf, $telefone, $dataNascimento, $matricula, $diasLivres, $email, funcaoMonitor $funcaoMonitor) {
-            parent::__construct             ($nome, $email, $telefone);
+        public function __construct($nome, $cpf, $telefone, $dataNascimento, $matricula, $email, $senha) {
+            parent::__construct             ($nome, $email, $telefone, $senha);
             $this->SetCPF                   ($cpf);
-            $this->SetIdade                 ($dataNascimento);
+            $this->SetIdade                 ($dataNascimento); //Set tanto a Idade tanto a Data de nascimento
             $this->SetMatricula             ($matricula);
-            $this->SetDiasLivres            ($diasLivres);
 
-            $this->_funcao = $funcaoMonitor;
+            //$this->_funcao = $funcaoMonitor;
         }//Fim do metodo __Construct()
 
         //Metodo SetCPF()
@@ -60,12 +58,15 @@ namespace web\classes\usuario\monitores {
         //Metodo SetIdade()
         protected function setIdade($dataNascimento) {
             $dataNascimentoObj = DateTime::createFromFormat('d/m/Y', $dataNascimento);
+            $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d'); //Formartar a data para o padrão do banco de dados
+
             $dataAtual = new DateTime();
             $idade = $dataAtual->diff($dataNascimentoObj);
             $idade = $idade->y;
             
             if($idade > 17 && $idade < 120) {
                 $this->_idade = $idade;
+                $this->_dataNascimento = $dataNascimentoDB;
             } else {
                 //throw new \InvalidArgumentException('Voce nao tem a idade minima para se registrar nesse site!');
                 return false;    
@@ -81,11 +82,6 @@ namespace web\classes\usuario\monitores {
                 return false;    
             }
         }//Fim do metodo SetMatricula()
-
-        //Metodo SetDiasLivres()
-        protected function SetDiasLivres($diasLivres) { // ** INCOMPLETO **
-            array_push($this->_diasLivres, $diasLivres);
-        }//Fim do metodo SetDiasLivres()
 
         //Método AddVisitacao()
         public function AddVisitacao() {
@@ -110,18 +106,19 @@ namespace web\classes\usuario\monitores {
             return $this->_matricula; 
         } //Fim do método GetMatricula()
 
-        //Método GetDiasLivres()j
-        public function GetDiasLivres() { 
-            return $this->_diasLivres; 
-        } //Fim do método GetDiasLivres() ** INCOMPLETO **
-
         //Método GetFuncaoMonitor()
         public function GetFuncaoMonitor() { 
             return $this->_funcao->name; 
         } //Fim do método GetTipo()
 
-        
-    }
+        //Métdo DataNascimento()
+        public function GetDataNascimento() {
+            return $this->_dataNascimento;
+        }//Fim método DataNascimento()
 
-    $p1 = new Monitor('rodrigo', '204.887.487-80', '(86) 3338-8592', '02/08/1998', '20251CRB7203', 'seg', 'rodrigo@gmail.com', funcaoMonitor::professor);
+        //Método GetUsuario()
+        public function GetUsuario() {
+            return parent::class;
+        }//Fim do método GetUsuario()
+    }
 }

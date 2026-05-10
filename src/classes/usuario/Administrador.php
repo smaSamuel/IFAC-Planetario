@@ -16,7 +16,7 @@ namespace web\classes\usuario {
         function __construct($nome, $telefone, $email, $cpf, $dataNascimento, $senha) {
             $this->setNome          ($nome);
             $this->setTelefone      ($telefone);
-            $this->SetIdade         ($dataNascimento);
+            $this->SetIdade         ($dataNascimento); //Seta tanto a idade tanto a data de nascimento
             $this->setEmail         ($email);
             $this->setCPF           ($cpf);
             $this->setSenha         ($senha);
@@ -34,7 +34,7 @@ namespace web\classes\usuario {
         //Metodo SetIdade()
         protected function setIdade($dataNascimento) {
             $dataNascimentoObj = DateTime::createFromFormat('d/m/Y', $dataNascimento);
-            $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d');
+            $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d'); //Formatando a data para o padrão do banco de dados
             $dataAtual = new DateTime();
             $idade = $dataAtual->diff($dataNascimentoObj);
             $idade = $idade->y;

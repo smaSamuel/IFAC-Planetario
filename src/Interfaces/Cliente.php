@@ -2,7 +2,6 @@
 
 namespace web\Interfaces {
     use web\classes\agendamento\Horario;
-    use web\classes\agendamento\ReservaEspaco;
     use web\classes\usuario\monitores\MonitorProfessor;
 
     //Interface Cliente

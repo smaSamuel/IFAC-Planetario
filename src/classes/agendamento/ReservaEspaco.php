@@ -2,9 +2,7 @@
 namespace web\classes\agendamento {
 
     use web\classes\usuario\clientes\ClientePessoaJuridica;
-    use web\classes\usuario\Administrador;
     use web\classes\usuario\monitores\MonitorProfessor;
-    use web\classes\agendamento\Horario;
 
     class ReservaEspaco {
         private $_numVisitantesEsperados; //Como e uma reserva feita por uma instituição os visitantes não precisam ter cadastro 

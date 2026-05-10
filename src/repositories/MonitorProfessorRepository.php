@@ -1,13 +1,12 @@
 <?php
     namespace web\repositories {
 
-    use web\classes\usuario\Administrador;
     use web\includes\Database;
     use PDO;
-    use Reflector;
+    use web\classes\usuario\monitores\MonitorProfessor;
     use web\interface\Repository;
 
-        class AdministradorRepository implements Repository{
+        class MonitorProfessorRepository implements Repository {
             private PDO $pdo;
 
             //Método __construct()
@@ -18,17 +17,12 @@
 
             //Método CriarNovaLinhaTabela()
             public function CriarNovaLinhaTabela($classe, $chave_estrangeira = null) {
-                if ($classe instanceof Administrador) {
-                    $query = "INSERT INTO administradores (nome, email, telefone, senha) VALUES (?, ?, ?, ?);";
+                if ($classe instanceof MonitorProfessor) {
+                    $query = "INSERT INTO monitores_professores (id_monitor) VALUES (?);";
     
                     $stmt = $this->pdo->prepare($query);
 
-                    $stmt->execute([
-                        $classe->GetNome(),
-                        $classe->GetEmail(),
-                        $classe->GetTelefone(),
-                        $classe->GetSenha(),
-                    ]);
+                    $stmt->execute([$chave_estrangeira]);
     
                     return $this->pdo->lastInsertId();
                 } 
@@ -38,7 +32,7 @@
 
             //Método RemoverNovaLinhaTabela() 
             public function RemoverNovaLinhaTabela($id) {
-                $query = "DELETE FROM administradores WHERE :id = id;";
+                $query = "DELETE FROM monitores_professores WHERE :id = id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindParam(":id", $id);
@@ -47,33 +41,12 @@
 
             //Método AtualizarNovaLinhaTabela()
             public function AtualizarNovaLinhaTabela($id, $classe) {
-                if ($classe instanceof Administrador) {
-                    $atualCadastro = $this->ProcurarLinhaNaTabela($id);
-    
-                    $query = "UPDATE administradores SET nome = :nome, email = :email, telefone = :telefone, senha = :senha WHERE id = :id;";
-    
-                    $stmt = $this->pdo->prepare($query);
-                    $stmt->execute([
-                        ':id'           => $id,
-                        ':nome'         => $classe->GetNome() ?? $atualCadastro[0]["nome"],
-                        ':email'        => $classe->GetEmail() ?? $atualCadastro[0]["email"],
-                        ':telefone'     => $classe->GetTelefone() ?? $atualCadastro[0]["telefone"],
-                        ':senha'        => $classe->GetSenha() ?? $atualCadastro[0]["senha"],
-                    ]);
-    
-                    /*
-                        Aparentimente isso PODE tar erro, já que os métodos gets[...]() nunca retorna null
-                        Entretando isso AINDA (e espero) não é um problema
-                        -01:28 da manhã 
-                    */
-                } else {
-                    return false;
-                }
+                return false; //Não à o que atualizar
             }//Fim do método AtualizarNovaLinhaTabela()
 
             //Método ListaLinhasTabela()
             public function ListaLinhasTabela() {
-                $query = "SELECT id, nome, email, telefone FROM administradores;";
+                $query = "SELECT * FROM monitores_professores;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute();
@@ -83,7 +56,7 @@
 
             //Método ProcurarLinhaNaTabela()
             public function ProcurarLinhaNaTabela($id) {
-                $query = "SELECT * FROM administradores WHERE id = :id;";
+                $query = "SELECT * FROM monitores_professores WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([':id' => $id]);
@@ -93,15 +66,15 @@
 
             //Método ProcurarColunaNaTabela()
             public function ProcurarColunaNaTabela($id, $valor) {
-                $colunasRetornaveis = ['id', 'nome', 'email', 'telefone'];
+                $colunasRetornaveis = ['id', 'id_monitor'];
                 
                 //Verifica se o $valor estar e $colunasRetornaveis
-                if (!in_array($valor, $colunasRetornaveis)) {
+                if (!is_array($valor, $colunasRetornaveis)) {
                     //Se não estiver, retorne false
                     return false;
-                }
+                }   
 
-                $query = "SELECT {$valor} FROM administradores WHERE id = :id;";
+                $query = "SELECT {$valor} FROM monitores_professores WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([':id' => $id]);
@@ -109,4 +82,5 @@
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }//Fim do método ProcurarColunaNaTabela
         }
+
     }
