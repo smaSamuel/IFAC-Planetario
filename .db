@@ -1,0 +1,97 @@
+CREATE TABLE administradores (
+	id INT(11) NOT NULL AUTO_INCREMENT, 
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(2550) NOT NULL,
+	telefone VARCHAR(255) NOT NULL,
+    dataNascimento DATE NOT NULL,
+    cpf VARCHAR(255) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE usuarios (
+  	id INT(11) NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefone VARCHAR(255) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE monitores (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+    id_usuario INT(11) NOT NULL,
+    matricula VARCHAR(255) NOT NULL,
+    dataNascimento DATE NOT NULL,
+    cpf VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE
+);
+
+CREATE TABLE cliente_pessoaFisica(
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    id_usuario INT(11) NOT NULL,
+    dataNascimento DATE NOT NULL,
+    cpf VARCHAR (255) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE
+);    
+
+CREATE TABLE cliente_pessoaJuridica(
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    id_usuario INT(11) NOT NULL,
+    cnpj VARCHAR (255) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE
+);    
+
+
+CREATE TABLE monitores_professores (
+  	id INT(11) NOT NULL AUTO_INCREMENT,
+    id_monitor INT(11) NOT NULL,
+    PRIMARY KEY (id),
+   	FOREIGN KEY (id_monitor) REFERENCES monitores (id) ON DELETE CASCADE 
+);
+
+CREATE TABLE monitores_assistentes (
+  	id INT(11) NOT NULL AUTO_INCREMENT,
+    id_monitor INT(11) NOT NULL,
+    PRIMARY KEY (id),
+   	FOREIGN KEY (id_monitor) REFERENCES monitores (id) ON DELETE CASCADE 
+);
+
+CREATE TABLE solicitacoes_assistentes (
+  	id INT (11) NOT NULL AUTO_INCREMENT,
+    id_monitor_assistente INT (11),
+    id_monitor_professor INT (11),
+    diaAssistencia DATETIME NOT NULL,
+    diaSolicitacao DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_monitor_assistente) REFERENCES monitores_assistentes (id) ON DELETE SET NULL,
+    FOREIGN KEY (id_monitor_professor) REFERENCES monitores_professores (id) ON DELETE SET NULL
+);
+
+CREATE TABLE horarios (
+  	id INT(11) NOT NULL AUTO_INCREMENT,
+    id_monitor_professor INT (11),
+    dataHorario DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_monitor_professor) REFERENCES monitores_professores (id) ON DELETE SET NULL
+);
+
+CREATE TABLE reservaEspaco(
+  	id INT(11) NOT NULL AUTO_INCREMENT,
+    id_horario INT (11) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_horario) REFERENCES horarios (id) ON DELETE CASCADE
+);
+
+CREATE TABLE visitas_horario (
+  	id INT(11) NOT NULL AUTO_INCREMENT,
+    id_horario INT (11) NOT NULL,
+    id_cliente_pessoaFisica INT(11) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_horario) REFERENCES horarios (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_cliente_pessoaFisica) REFERENCES cliente_pessoaFisica (id) ON DELETE CASCADE
+);
