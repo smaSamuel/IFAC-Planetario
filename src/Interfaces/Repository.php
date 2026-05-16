@@ -1,5 +1,5 @@
 <?php
-    namespace web\interface {
+    namespace web\Interfaces {
         interface Repository {
 
             //Método CriarNovaLinhaTabela()

@@ -5,9 +5,10 @@
     use web\includes\Database;
     use PDO;
     use Reflector;
-    use web\interface\Repository;
+    use web\Interface\Repository;
+    use web\Interfaces\Repository as InterfacesRepository;
 
-        class AdministradorRepository implements Repository{
+        class AdministradorRepository implements InterfacesRepository{
             private PDO $pdo;
 
             //Método __construct()
@@ -19,7 +20,7 @@
             //Método CriarNovaLinhaTabela()
             public function CriarNovaLinhaTabela($classe, $chave_estrangeira = null) {
                 if ($classe instanceof Administrador) {
-                    $query = "INSERT INTO administradores (nome, email, telefone, senha) VALUES (?, ?, ?, ?);";
+                    $query = "INSERT INTO administradores (nome, email, telefone, dataNascimento, cpf, senha) VALUES (?, ?, ?, ?, ?, ?);";
     
                     $stmt = $this->pdo->prepare($query);
 
@@ -27,6 +28,8 @@
                         $classe->GetNome(),
                         $classe->GetEmail(),
                         $classe->GetTelefone(),
+                        $classe->getDataNascimento(),
+                        $classe->getCPF(),
                         $classe->GetSenha(),
                     ]);
     

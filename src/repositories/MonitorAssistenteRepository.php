@@ -2,11 +2,11 @@
     namespace web\repositories {
 
     use web\includes\Database;
-    use PDO;
     use web\classes\usuario\monitores\MonitorAssistente;
-    use web\interface\Repository;
+    use PDO;
+    use web\Interfaces\Repository as InterfacesRepository;
 
-        class MonitorAssistenteRepository implements Repository {
+        class MonitorAssistenteRepository implements InterfacesRepository {
             private PDO $pdo;
 
             //Método __construct()
