@@ -4,7 +4,7 @@
     use web\classes\usuario\monitores\Monitor;
     use web\includes\Database;
     use PDO;
-    use web\interface\Repository;
+    use web\Interfaces\Repository;
 
         class MonitorRepository implements Repository{
             private PDO $pdo;

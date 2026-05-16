@@ -52,7 +52,7 @@ namespace web\classes\usuario\monitores {
                 }
             }
             
-            $this->_cpf = $cpf;
+            $this->_cpf = hash_hmac('sha256', $cpf, getenv('HASH_SECRET_KEY'));
         } //Fim do metodo SetCPF()
 
         //Metodo SetIdade()

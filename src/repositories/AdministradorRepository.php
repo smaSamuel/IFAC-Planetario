@@ -5,10 +5,9 @@
     use web\includes\Database;
     use PDO;
     use Reflector;
-    use web\Interface\Repository;
-    use web\Interfaces\Repository as InterfacesRepository;
+    use web\Interfaces\Repository;
 
-        class AdministradorRepository implements InterfacesRepository{
+        class AdministradorRepository implements Repository{
             private PDO $pdo;
 
             //Método __construct()

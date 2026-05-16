@@ -4,7 +4,7 @@
     use PDO;
     use web\classes\usuario\Usuario;
     use web\includes\Database;
-    use web\Interface\Repository;
+    use web\Interfaces\Repository;
 
         class UsuarioRepository implements Repository {
             private PDO $pdo;
