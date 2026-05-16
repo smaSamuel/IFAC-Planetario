@@ -2,12 +2,12 @@
 namespace web\classes\agendamento {
 
     use web\classes\usuario\clientes\ClientePessoaJuridica;
-    use web\classes\usuario\monitores\MonitorProfessor;
+    use web\classes\usuario\Monitor;
 
     class ReservaEspaco {
         private $_numVisitantesEsperados; //Como e uma reserva feita por uma instituição os visitantes não precisam ter cadastro 
         private ClientePessoaJuridica $_reponsavel;
-        public function __construct(ClientePessoaJuridica $reponsavel, $numVisitantesEsperados, MonitorProfessor $professor = null)
+        public function __construct(ClientePessoaJuridica $reponsavel, $numVisitantesEsperados, Monitor $professor = null)
         {   
             $this->_reponsavel = $reponsavel;
             $this->SetNumVisistantesEsperados($numVisitantesEsperados);

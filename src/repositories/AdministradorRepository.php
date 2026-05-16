@@ -38,14 +38,14 @@
                 return false;
             }//Fim do método CriarNovaLinhaTabela()
 
-            //Método RemoverNovaLinhaTabela() 
-            public function RemoverNovaLinhaTabela($id) {
-                $query = "DELETE FROM administradores WHERE :id = id;";
+            //Método RemoverLinhaTabela() 
+            public function RemoverLinhaTabela($id) {
+                $query = "DELETE FROM administradores WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindParam(":id", $id);
                 $stmt->execute();
-            }//Fim do método RemoverNovaLinhaTabela()
+            }//Fim do método RemoverLinhaTabela()
 
             //Método AtualizarNovaLinhaTabela()
             public function AtualizarNovaLinhaTabela($id, $classe) {

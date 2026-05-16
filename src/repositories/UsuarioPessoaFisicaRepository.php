@@ -18,6 +18,10 @@
             //Método CriarNovaLinhaTabela()
             public function CriarNovaLinhaTabela($classe) {
                 if ($classe instanceof ClientePessoaFisica) {
+                    //Instancia no banco de dados a classe Usuario
+                    $chave_estrangeira = new UsuarioRepository();
+                    $chave_estrangeira = $chave_estrangeira->CriarNovaLinhaTabela($classe); //Retornar como chave estrangeira o ID do novo usuario
+
                     $query = "INSERT INTO cliente_pessoaFisica (id_usuario) VALUES (?);";
     
                     $stmt = $this->pdo->prepare($query);
@@ -30,14 +34,14 @@
                 return false;
             }//Fim do método CriarNovaLinhaTabela()
 
-            //Método RemoverNovaLinhaTabela() 
-            public function RemoverNovaLinhaTabela($id) {
+            //Método RemoverLinhaTabela() 
+            public function RemoverLinhaTabela($id) {
                 $query = "DELETE FROM cliente_pessoaFisica WHERE :id = id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindParam(":id", $id);
                 $stmt->execute();
-            }//Fim do método RemoverNovaLinhaTabela()
+            }//Fim do método RemoverLinhaTabela()
 
             //Método AtualizarNovaLinhaTabela()
             public function AtualizarNovaLinhaTabela($id, $classe) {
@@ -87,7 +91,7 @@
                 $colunasRetornaveis = ['id', 'id_usuario', 'dataNascimento', 'cpf'];
                 
                 //Verifica se o $valor estar e $colunasRetornaveis
-                if (!is_array($valor, $colunasRetornaveis)) {
+                if (!in_array($valor, $colunasRetornaveis)) {
                     //Se não estiver, retorne false
                     return false;
                 }   

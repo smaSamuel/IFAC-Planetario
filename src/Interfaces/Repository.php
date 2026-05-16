@@ -10,8 +10,8 @@
                     -SEMPRE verificar se o valor que estar chegando em $classe e realmente a classe que será instanciada 
             */
 
-            //Método RemoverNovaLinhaTabela()
-            public function RemoverNovaLinhaTabela($id);
+            //Método RemoverLinhaTabela()
+            public function RemoverLinhaTabela($id);
             /*
                 Remove um elemento de uma tabela
             */

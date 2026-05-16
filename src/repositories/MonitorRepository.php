@@ -39,14 +39,14 @@
                 return false;
             }//Fim do método CriarNovaLinhaTabela()
 
-            //Método RemoverNovaLinhaTabela() 
-            public function RemoverNovaLinhaTabela($id) {
-                $query = "DELETE FROM monitores WHERE :id = id;";
+            //Método RemoverLinhaTabela() 
+            public function RemoverLinhaTabela($id) {
+                $query = "DELETE FROM monitores WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindParam(":id", $id);
                 $stmt->execute();
-            }//Fim do método RemoverNovaLinhaTabela()
+            }//Fim do método RemoverLinhaTabela()
 
             //Método AtualizarNovaLinhaTabela()
             public function AtualizarNovaLinhaTabela($id, $classe) {
@@ -74,7 +74,7 @@
 
             //Método ListaLinhasTabela()
             public function ListaLinhasTabela() {
-                $query = "SELECT id, id_usuario, matricula, dataNascimento FROM monitores;";
+                $query = "SELECT id, id_usuario, dataNascimento FROM monitores;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute();
@@ -94,7 +94,7 @@
 
             //Método ProcurarColunaNaTabela()
             public function ProcurarColunaNaTabela($id, $valor) {
-                $colunasRetornaveis = ['id', 'id_usuario', 'dataNascimento', 'matricula'];
+                $colunasRetornaveis = ['id', 'id_usuario', 'dataNascimento'];
                 
                 //Verifica se o $valor estar e $colunasRetornaveis
                 if (!in_array($valor, $colunasRetornaveis)) {
