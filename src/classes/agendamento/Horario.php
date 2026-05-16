@@ -5,6 +5,7 @@ namespace web\classes\agendamento {
     use web\classes\usuario\Administrador;
     use web\classes\usuario\clientes\ClientePessoaFisica;
     use web\classes\usuario\clientes\ClientePessoaJuridica;
+    use web\classes\usuario\Monitor;
     use web\classes\usuario\monitores\MonitorAssistente;
     use web\classes\usuario\monitores\MonitorProfessor;
     
@@ -17,44 +18,32 @@ namespace web\classes\agendamento {
     class Horario {
         protected StatusHorario $_statusHorario;
 
-        /* Guardar dados do horario */
-        protected array $_dados = [];
-        private array $_dadosPermitidos = [
-        //  OBJ                         VALOR  
-            'horario'                =>  DateTime::class,
-            'professor'              =>  MonitorProfessor::class,
-            'reservado'              =>  ReservaEspaco::class,
-            'reservador'             =>  ClientePessoaJuridica::class,
-        ];
-
-
         private array $_assistentes = [];
         private array $_visitantes = [];
+        private $_horario;
+        private $_IDprofessor;
+        private $_reservado;
+        private $_reservador;
 
         //Método __construct()
-        public function __construct(DateTime $data, MonitorProfessor $professor, StatusHorario $statusHorario) {
+        public function __construct($data, $professor, StatusHorario $statusHorario) {
             $this->_statusHorario = $statusHorario;
-            $this->SetDado('horario', $data);
-            $this->SetDado('professor', $professor);
+            $this->SetData($data);
+            $this->SetProfessor($professor);
         }//Fim do método __construct()
         
-        //Método SetDado() 
-        public function SetDado($obj, $valor) {
-            //Verificar se o objeto e permitido
-            if (!array_key_exists($obj, $this->_dadosPermitidos)) {
-                //throw new \InvalidArgumentException("O objeto: '{$obj}' não e permitido");
-                return false;    
-            } 
+        //Método SetProfessor()
+        private function SetProfessor($professor) {
+            $this->_IDprofessor = $professor;
+        }//Fim do método SetProfessor()
 
-            //Verificar se o valor e permitido
-            $valoresPermitidos = $this->_dadosPermitidos[$obj];
-            if (!($valor instanceof $valoresPermitidos)) {
-                //throw new \InvalidArgumentException("O valor: '{$valor}' não e permitido");
-                return false;    
-            }
+        //Método SetData()
+        private function SetData($data) {
+            $dataNascimentoObj = DateTime::createFromFormat('d/m/Y', $data);
+            $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d'); //Formatando a data para o padrão do banco de dados
 
-            $this->_dados[$obj] = $valor;
-        }//Fim do método SetDado()
+            $this->_horario = $dataNascimentoDB;
+        }//Fim do método SetData()
 
         //Método SetStatus()
         public function SetStatus($valor) {
@@ -63,26 +52,22 @@ namespace web\classes\agendamento {
 
         //Método SetReserva()
         public function SetReserva(ReservaEspaco $reserva, ClientePessoaJuridica $reservador) {
-            $this->SetDado('reservado', $reserva);
-            $this->SetDado('reservador', $reservador);
+            $this->_reservado = $reserva;
+            $this->_reservador = $reservador;
             $this->SetStatus(StatusHorario::reservada);
         }//Fim do método SetReserva()
 
         //Método AddAssistente()
-        public function AddAssistente(MonitorAssistente $assistente, MonitorProfessor $professor) {
-            if ($this->GetDado('professor') === $professor) { //Verifica (na teoria) se esse professor e o reponsavel por esse dia 
-                array_push($this->_assistentes, $assistente);
-            }
+        public function AddAssistente(Monitor $assistente) { 
+            array_push($this->_assistentes, $assistente);
         }//Fim do método AddAssistente()
 
         //Método RemoverAssistente()
-        public function RemoverAssistente(MonitorAssistente $assistente, MonitorProfessor $professor) {
-            if ($this->GetDado('professor') === $professor) { //Verifica (na teoria) se esse professor e o reponsavel por esse dia 
-                foreach ($this->_assistentes as $index => $assistenteAtual) {
-                    if ($assistenteAtual === $assistente) {
-                        unset($this->_assistentes[$index]);
-                        break;
-                    }
+        public function RemoverAssistente(Monitor $assistente) {
+            foreach ($this->_assistentes as $index => $assistenteAtual) {
+                if ($assistenteAtual === $assistente) {
+                    unset($this->_assistentes[$index]);
+                    break;
                 }
             }
         }//Fim do método RemoverAssistente()
@@ -108,7 +93,7 @@ namespace web\classes\agendamento {
                 // se este horário estiver reservado:
 
                 //Verifica se quem estar tentando desmarcar esse reserva e o dono ou administrador
-                if($curret === $this->GetDado('reservador') || $curret instanceof Administrador) {
+                if($curret === $this->GetReservador() || $curret instanceof Administrador) {
                     unset($this->_dados['reservado']);
                     $this->SetStatus(StatusHorario::reservada);
                 }
@@ -123,36 +108,10 @@ namespace web\classes\agendamento {
             */
         }//Fim do método Desagendar()
 
-        //Método AlterarCadastroHorario
-        public function AlterarCadastroHorario(ClientePessoaJuridica|Administrador $requerente, $obj, $valor) {
-            //Verificar se quem solicitou a alteração e: o reponsavel desse agendamento ou um administrador
-            if ($requerente === $this->GetDado('reservador') || $requerente instanceof Administrador) {
-                //Autorizar alterações
-                //Alterar dados
-                $this->SetDado($obj, $valor);
-            } else {
-                //throw new \InvalidArgumentException('Você não tem autorização para alterar essa reserva!');  
-                return false; 
-            }
-        }//Fim do método CadastrarHorario()
-
         //Método GetAssistentes()
         public function GetAssistentes() {
             return $this->_assistentes;
         }//Fim do método GetAssistentes()
-
-        //Método GetDado()
-        public function GetDado($obj) {
-            if (array_key_exists($obj, $this->_dados)) {
-                return $this->_dados[$obj];    
-            } else {
-                return null;
-            }
-
-           //return $this->_dados;
-        
-            //return $this->_dados[$obj] ?? null;    
-       }//Fim do método GetDado()
 
        //Método GetStatusHorario
        public function GetStatusHorario() {
@@ -164,15 +123,12 @@ namespace web\classes\agendamento {
             return $this->_visitantes;
        }//Fim do método GettVisitantes()
 
-       //Método GetReserva
-       public function GetReserva() {
-            if (array_key_exists('reservado', $this->_dados)) {
-                return $this->_dados['reservado'];
-            } else {
-                return false;
-            }
-
-       }//Fim do método GetReserva()
+        //Método GetProfessor()
+        public function GetProfessor() { return $this->_IDprofessor; }
+        //Método GetReservador()
+        public function GetReservador() { return $this->_reservador; }
+        //Método GetHorario()
+        public function GetHorario() { return $this->_horario; }
 
        public function __destruct() {}
     }
