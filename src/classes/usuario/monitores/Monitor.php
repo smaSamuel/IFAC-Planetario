@@ -56,7 +56,7 @@ namespace web\classes\usuario\monitores {
         } //Fim do metodo SetCPF()
 
         //Metodo SetIdade()
-        protected function setIdade($dataNascimento) {
+        protected function SetIdade($dataNascimento) {
             $dataNascimentoObj = DateTime::createFromFormat('d/m/Y', $dataNascimento);
             $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d'); //Formartar a data para o padrão do banco de dados
 

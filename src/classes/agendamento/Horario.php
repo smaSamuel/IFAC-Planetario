@@ -101,7 +101,7 @@ namespace web\classes\agendamento {
             //Verifica se e um cliente querendo desmarcar o horario
             if ($this->GetStatusHorario() != StatusHorario::reservada) { 
                 // se for um cliente:
-                array_diff($this->_visitantes, [$curret]);                
+                $this->_visitantes = array_diff($this->_visitantes, [$curret]);                
             } 
             //Verifica se e uma reserva sendo desfeita
             elseif ($this->GetStatusHorario()::reservada) { 
