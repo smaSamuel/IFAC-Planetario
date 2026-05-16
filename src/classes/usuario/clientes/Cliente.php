@@ -2,12 +2,12 @@
 
 namespace web\classes\usuario\clientes {
     use web\classes\agendamento\Horario;
-    use web\classes\usuario\monitores\MonitorProfessor;
+    use web\classes\usuario\Monitor;
 
     //Interface Cliente
     interface Cliente {
         //Ações de todos os clientes
-        public function ocuparEspaco(Horario $horario, MonitorProfessor $professor = null); 
+        public function ocuparEspaco(Horario $horario, Monitor $professor = null); 
         public function desocuparEspaco(Horario $horario); 
 
     }

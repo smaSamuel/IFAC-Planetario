@@ -16,7 +16,7 @@
             }//Fim do mtodo __construct()
 
             //Método CriarNovaLinhaTabela()
-            public function CriarNovaLinhaTabela($classe, $chave_estrangeira = null) {
+            public function CriarNovaLinhaTabela($classe) {
                 if ($classe instanceof Usuario) {
                     $query = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES (?, ?, ?, ?);";
     

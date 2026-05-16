@@ -1,8 +1,7 @@
 <?php
 
-namespace web\classes\usuario\monitores {
+namespace web\classes\usuario {
 
-    use  web\classes\usuario\Usuario;
     use DateTime;
 
     enum funcaoMonitor {
@@ -16,17 +15,15 @@ namespace web\classes\usuario\monitores {
     class Monitor extends Usuario {
         private $_cpf;
         private $_idade;
-        private $_matricula;
         private $_dataNascimento;
         private funcaoMonitor $_funcao;
 
         //Método __construct()
-        public function __construct($nome, $cpf, $telefone, $dataNascimento, $matricula, $email, $senha) {
+        public function __construct($nome, $cpf, $telefone, $dataNascimento, $email, $senha, funcaoMonitor $funcao) {
             parent::__construct             ($nome, $email, $telefone, $senha);
             $this->SetCPF                   ($cpf);
             $this->SetIdade                 ($dataNascimento); //Set tanto a Idade tanto a Data de nascimento
-            $this->SetMatricula             ($matricula);
-
+            $this->_funcao = $funcao; 
             //$this->_funcao = $funcaoMonitor;
         }//Fim do metodo __Construct()
 
@@ -73,16 +70,6 @@ namespace web\classes\usuario\monitores {
             }
         }//Fim metodo SetIdade()    
 
-        //Metodo SetMatricula()
-        protected function SetMatricula($matricula) {
-            if (is_string($matricula)) {
-                $this->_matricula = $matricula;
-            } else {
-                //throw new \InvalidArgumentException('Matricula Invalida!');
-                return false;    
-            }
-        }//Fim do metodo SetMatricula()
-
         //Método AddVisitacao()
         public function AddVisitacao() {
             /*
@@ -100,11 +87,6 @@ namespace web\classes\usuario\monitores {
         public function GetIdade() { 
             return $this->_idade; 
         } //Fim do método GetIdade()
-
-        //Método GetMatricula()
-        public function GetMatricula() { 
-            return $this->_matricula; 
-        } //Fim do método GetMatricula()
 
         //Método GetFuncaoMonitor()
         public function GetFuncaoMonitor() { 

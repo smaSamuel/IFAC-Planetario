@@ -3,7 +3,7 @@
         interface Repository {
 
             //Método CriarNovaLinhaTabela()
-            public function CriarNovaLinhaTabela($classe, $chave_estrangeira = null);
+            public function CriarNovaLinhaTabela($classe);
             /*
                 Instancia um novo elemento em uma tablea, e retorna o ID desse novo elemento
                 IMPORTANTE:

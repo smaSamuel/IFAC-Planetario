@@ -1,7 +1,7 @@
 <?php
     namespace web\repositories {
 
-    use web\classes\usuario\monitores\Monitor;
+    use web\classes\usuario\Monitor;
     use web\includes\Database;
     use PDO;
     use web\Interfaces\Repository;
@@ -16,15 +16,19 @@
             }//Fim do mtodo __construct()
 
             //Método CriarNovaLinhaTabela()
-            public function CriarNovaLinhaTabela($classe, $chave_estrangeira = null) {
+            public function CriarNovaLinhaTabela($classe) {
                 if ($classe instanceof Monitor) {
-                    $query = "INSERT INTO monitores (id_usuario, matricula, dataNascimento, cpf) VALUES (?, ?, ?, ?);";
+                    //Instancia no banco de dados a classe Usuario
+                    $chave_estrangeira = new UsuarioRepository();
+                    $chave_estrangeira = $chave_estrangeira->CriarNovaLinhaTabela($classe); //Retornar como chave estrangeira o ID do novo usuario
+
+                    $query = "INSERT INTO monitores (id_usuario, tipo, dataNascimento, cpf) VALUES (?, ?, ?, ?);";
     
                     $stmt = $this->pdo->prepare($query);
 
                     $stmt->execute([
                         $chave_estrangeira,
-                        $classe->GetMatricula(),
+                        $classe->GetFuncaoMonitor(),
                         $classe->GetDataNascimento(),
                         $classe->GetCPF(),
                     ]);
@@ -49,14 +53,14 @@
                 if ($classe instanceof Monitor) {
                     $atualCadastro = $this->ProcurarLinhaNaTabela($id);
     
-                    $query = "UPDATE monitores SET matricula = :matricula, dataNascimento = :dataNascimento, cpf = :cpf WHERE id = :id;";
+                    $query = "UPDATE monitores SET tipo = :tipo, dataNascimento = :dataNascimento, cpf = :cpf WHERE id = :id;";
     
                     $stmt = $this->pdo->prepare($query);
                     $stmt->execute([
-                        ':id'           => $id,
-                        ':matricula'         => $classe->GetMatricula() ?? $atualCadastro[0]["matricula"],
-                        ':dataNascimento'        => $classe->GetDataNascimento() ?? $atualCadastro[0]["dataNascimento"],
-                        ':cpf'        => $classe->GetCPF() ?? $atualCadastro[0]["cpf"],
+                        ':id'                       => $id,
+                        ':dataNascimento'           => $classe->GetDataNascimento() ?? $atualCadastro[0]["dataNascimento"],
+                        ':cpf'                      => $classe->GetCPF() ?? $atualCadastro[0]["cpf"],
+                        ':tipo'                      => $classe->GetFuncaoMonitor() ?? $atualCadastro[0]["tipo"],
                     ]);
     
                     /*
