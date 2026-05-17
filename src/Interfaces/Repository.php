@@ -2,42 +2,42 @@
     namespace web\Interfaces {
         interface Repository {
 
-            //Método CriarNovaLinhaTabela()
-            public function CriarNovaLinhaTabela($classe);
+            //Método CriarEntidade()
+            public function CriarEntidade($classe);
             /*
                 Instancia um novo elemento em uma tablea, e retorna o ID desse novo elemento
                 IMPORTANTE:
                     -SEMPRE verificar se o valor que estar chegando em $classe e realmente a classe que será instanciada 
             */
 
-            //Método RemoverLinhaTabela()
-            public function RemoverLinhaTabela($id);
+            //Método RemoverEntidade()
+            public function RemoverEntidade($id);
             /*
                 Remove um elemento de uma tabela
             */
 
-            //Método AtualizarNovaLinhaTabela()
-            public function AtualizarNovaLinhaTabela($id, $classe);
+            //Método AtualizarEntidade()
+            public function AtualizarEntidade($id, $classe);
             /*
                 Atualiza as colunas de um elemento de uma tabela
                 IMPORTANTE:
                     -SEMPRE verificar se o valor que estar chegando em $classe e realmente a classe que será instanciada 
             */
             
-            //Método ListaLinhasDaTabela()
-            public function ListaLinhasTabela();
+            //Método ListarEntidade()
+            public function ListarEntidade();
             /*
                 Retorna todos os elementos de uma tabela
             */
 
-            //Método ProcurarLinhaNaTabela()
-            public function ProcurarLinhaNaTabela($id);
+            //Método ProcurarEntidade()
+            public function ProcurarEntidade($id);
             /*
                 Retorna todas as colunas de UM elemento de uma tabela
             */
 
-            //Método ProcurarColunaNaTabela()
-            public function ProcurarColunaNaTabela($id, $valor);
+            //Método ProcurarAtributoEntidade()
+            public function ProcurarAtributoEntidade($id, $valor);
             /*
                 Retorna a COLUNA de UM elemento de uma tabela
             */

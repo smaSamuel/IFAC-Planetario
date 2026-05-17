@@ -15,12 +15,12 @@
                 $this->pdo = Database::GetBancoDadosInfos();
             }//Fim do mtodo __construct()
 
-            //Método CriarNovaLinhaTabela()
-            public function CriarNovaLinhaTabela($classe) {
+            //Método CriarEntidade()
+            public function CriarEntidade($classe) {
                 if ($classe instanceof Monitor) {
                     //Instancia no banco de dados a classe Usuario
                     $chave_estrangeira = new UsuarioRepository();
-                    $chave_estrangeira = $chave_estrangeira->CriarNovaLinhaTabela($classe); //Retornar como chave estrangeira o ID do novo usuario
+                    $chave_estrangeira = $chave_estrangeira->CriarEntidade($classe); //Retornar como chave estrangeira o ID do novo usuario
 
                     $query = "INSERT INTO monitores (id_usuario, tipo, dataNascimento, cpf) VALUES (?, ?, ?, ?);";
     
@@ -37,21 +37,22 @@
                 } 
 
                 return false;
-            }//Fim do método CriarNovaLinhaTabela()
+            }//Fim do método CriarEntidade()
 
-            //Método RemoverLinhaTabela() 
-            public function RemoverLinhaTabela($id) {
+            //Método RemoverEntidade() 
+            public function RemoverEntidade($id) {
                 $query = "DELETE FROM monitores WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindParam(":id", $id);
                 $stmt->execute();
-            }//Fim do método RemoverLinhaTabela()
+            }//Fim do método RemoverEntidade()
 
-            //Método AtualizarNovaLinhaTabela()
-            public function AtualizarNovaLinhaTabela($id, $classe) {
+            //Método AtualizarEntidade()
+            public function AtualizarEntidade($id, $classe) {
                 if ($classe instanceof Monitor) {
-                    $atualCadastro = $this->ProcurarLinhaNaTabela($id);
+                    $usuarioRepository = new UsuarioRepository();
+                    $atualCadastro = $this->ProcurarEntidade($id);
     
                     $query = "UPDATE monitores SET tipo = :tipo, dataNascimento = :dataNascimento, cpf = :cpf WHERE id = :id;";
     
@@ -60,40 +61,44 @@
                         ':id'                       => $id,
                         ':dataNascimento'           => $classe->GetDataNascimento() ?? $atualCadastro[0]["dataNascimento"],
                         ':cpf'                      => $classe->GetCPF() ?? $atualCadastro[0]["cpf"],
-                        ':tipo'                      => $classe->GetFuncaoMonitor() ?? $atualCadastro[0]["tipo"],
-                    ]);
-    
+                        ':tipo'                     => $classe->GetFuncaoMonitor() ?? $atualCadastro[0]["tipo"],
+                    ]); 
                     /*
                         Aparentimente isso PODE tar erro, já que os métodos gets[...]() nunca retorna null
                         Entretando isso AINDA (e espero) não é um problema
                     */
+
+                    // Atualizar os dados de usuario 
+                    $id_Usuario = $this->ProcurarAtributoEntidade($id, 'id_usuario'); //Retornar o id de usuario do monitor
+                    $usuarioRepository->AtualizarEntidade($id_Usuario, $classe); 
+    
                 } else {
                     return false;
                 }
-            }//Fim do método AtualizarNovaLinhaTabela()
+            }//Fim do método AtualizarEntidade()
 
-            //Método ListaLinhasTabela()
-            public function ListaLinhasTabela() {
+            //Método ListarEntidade()
+            public function ListarEntidade() {
                 $query = "SELECT id, id_usuario, dataNascimento FROM monitores;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute();
 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }//Fim do método ListaLinhasTabela()
+            }//Fim do método ListarEntidade()
 
-            //Método ProcurarLinhaNaTabela()
-            public function ProcurarLinhaNaTabela($id) {
+            //Método ProcurarEntidade()
+            public function ProcurarEntidade($id) {
                 $query = "SELECT * FROM monitores WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([':id' => $id]);
 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }//Fim do método ProcurarLinhaNaTabela()
+            }//Fim do método ProcurarEntidade()
 
-            //Método ProcurarColunaNaTabela()
-            public function ProcurarColunaNaTabela($id, $valor) {
+            //Método ProcurarAtributoEntidade()
+            public function ProcurarAtributoEntidade($id, $valor) {
                 $colunasRetornaveis = ['id', 'id_usuario', 'dataNascimento'];
                 
                 //Verifica se o $valor estar e $colunasRetornaveis
@@ -103,7 +108,7 @@
                 }   
 
                 $query = "SELECT {$valor} FROM monitores;";
-            }//Fim do método ProcurarColunaNaTabela
+            }//Fim do método ProcurarAtributoEntidade
 
         }
     }

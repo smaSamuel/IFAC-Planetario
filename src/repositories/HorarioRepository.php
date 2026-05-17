@@ -18,8 +18,8 @@ namespace web\repositories {
             $this->pdo = Database::GetBancoDadosInfos();
         } //Fim do mtodo __construct()
 
-        //Método CriarNovaLinhaTabela()
-        public function CriarNovaLinhaTabela($classe)
+        //Método CriarEntidade()
+        public function CriarEntidade($classe)
         {
             if ($classe instanceof Horario) {
                 $query = "INSERT INTO horarios (id_monitor, dataHorario) VALUES (?, ?);";
@@ -35,31 +35,31 @@ namespace web\repositories {
             }
 
             return false;
-        } //Fim do método CriarNovaLinhaTabela()
+        } //Fim do método CriarEntidade()
 
-        //Método RemoverLinhaTabela() 
-        public function RemoverLinhaTabela($id)
+        //Método RemoverEntidade() 
+        public function RemoverEntidade($id)
         {
             $query = "DELETE FROM horarios WHERE id = :id;";
 
             $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(":id", $id);
             $stmt->execute();
-        } //Fim do método RemoverNovaLinhaTabela()
+        } //Fim do método RemoverEntidade()
 
-        //Método AtualizarNovaLinhaTabela()
-        public function AtualizarNovaLinhaTabela($id, $classe)
+        //Método AtualizarEntidade()
+        public function AtualizarEntidade($id, $classe)
         {
             if ($classe instanceof Horario) {
-                $atualCadastro = $this->ProcurarLinhaNaTabela($id);
+                $atualCadastro = $this->ProcurarEntidade($id);
 
                 $query = "UPDATE horarios SET id = :id, id_monitor = :id_monitor, dataHorario = :dataHorario WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([
                     ':id'                 => $id,
-                    ':id_monitor'         => $classe->GetProfessor() ?? $atualCadastro[0]["nome"],
-                    ':dataHorario'        => $classe->GetHorario() ?? $atualCadastro[0]["email"],
+                    ':id_monitor'         => $classe->GetProfessor() ?? $atualCadastro[0]["id_monitor"],
+                    ':dataHorario'        => $classe->GetHorario() ?? $atualCadastro[0]["dataHorario"],
                 ]);
 
                 /*
@@ -69,10 +69,10 @@ namespace web\repositories {
             } else {
                 return false;
             }
-        } //Fim do método AtualizarNovaLinhaTabela()
+        } //Fim do método AtualizarEntidade()
 
-        //Método ListaLinhasTabela()
-        public function ListaLinhasTabela()
+        //Método ListarEntidade()
+        public function ListarEntidade()
         {
             $query = "SELECT id, id_monitor, dataHorario FROM horarios;";
 
@@ -80,10 +80,10 @@ namespace web\repositories {
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } //Fim do método ListaLinhasTabela()
+        } //Fim do método ListarEntidade()
 
-        //Método ProcurarLinhaNaTabela()
-        public function ProcurarLinhaNaTabela($id)
+        //Método ProcurarEntidade()
+        public function ProcurarEntidade($id)
         {
             $query = "SELECT * FROM horarios WHERE id = :id;";
 
@@ -91,10 +91,10 @@ namespace web\repositories {
             $stmt->execute([':id' => $id]);
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } //Fim do método ProcurarLinhaNaTabela()
+        } //Fim do método ProcurarEntidade()
 
-        //Método ProcurarColunaNaTabela()
-        public function ProcurarColunaNaTabela($id, $valor)
+        //Método ProcurarAtributoEntidade()
+        public function ProcurarAtributoEntidade($id, $valor)
         {
             $colunasRetornaveis = ['id', 'id_monitor', 'dataHorario'];
 
@@ -110,7 +110,7 @@ namespace web\repositories {
             $stmt->execute([':id' => $id]);
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } //Fim do método ProcurarColunaNaTabela
+        } //Fim do método ProcurarAtributoEntidade
 
     }
 }

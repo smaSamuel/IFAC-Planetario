@@ -15,8 +15,8 @@
                 $this->pdo = Database::GetBancoDadosInfos();
             }//Fim do mtodo __construct()
 
-            //Método CriarNovaLinhaTabela()
-            public function CriarNovaLinhaTabela($classe) {
+            //Método CriarEntidade()
+            public function CriarEntidade($classe) {
                 if ($classe instanceof Usuario) {
                     $query = "INSERT INTO usuarios (nome, email, telefone, senha) VALUES (?, ?, ?, ?);";
     
@@ -33,21 +33,21 @@
                 } 
 
                 return false;
-            }//Fim do método CriarNovaLinhaTabela()
+            }//Fim do método CriarEntidade()
 
-            //Método RemoverLinhaTabela() 
-            public function RemoverLinhaTabela($id) {
+            //Método RemoverEntidade() 
+            public function RemoverEntidade($id) {
                 $query = "DELETE FROM usuarios WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindParam(":id", $id);
                 $stmt->execute();
-            }//Fim do método RemoverNovaLinhaTabela()
+            }//Fim do método RemoverEntidade()
 
-            //Método AtualizarNovaLinhaTabela()
-            public function AtualizarNovaLinhaTabela($id, $classe) {
+            //Método AtualizarEntidade()
+            public function AtualizarEntidade($id, $classe) {
                 if ($classe instanceof Usuario) {
-                    $atualCadastro = $this->ProcurarLinhaNaTabela($id);
+                    $atualCadastro = $this->ProcurarEntidade($id);
     
                     $query = "UPDATE usuarios SET nome = :nome, email = :email, telefone = :telefone, senha = :senha WHERE id = :id;";
     
@@ -67,30 +67,30 @@
                 } else {
                     return false;
                 }
-            }//Fim do método AtualizarNovaLinhaTabela()
+            }//Fim do método AtualizarEntidade()
 
-            //Método ListaLinhasTabela()
-            public function ListaLinhasTabela() {
+            //Método ListarEntidade()
+            public function ListarEntidade() {
                 $query = "SELECT id, nome, email, telefone FROM usuarios;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute();
 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }//Fim do método ListaLinhasTabela()
+            }//Fim do método ListarEntidade()
 
-            //Método ProcurarLinhaNaTabela()
-            public function ProcurarLinhaNaTabela($id) {
+            //Método ProcurarEntidade()
+            public function ProcurarEntidade($id) {
                 $query = "SELECT * FROM usuarios WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([':id' => $id]);
 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }//Fim do método ProcurarLinhaNaTabela()
+            }//Fim do método ProcurarEntidade()
 
-            //Método ProcurarColunaNaTabela()
-            public function ProcurarColunaNaTabela($id, $valor) {
+            //Método ProcurarAtributoEntidade()
+            public function ProcurarAtributoEntidade($id, $valor) {
                 $colunasRetornaveis = ['id', 'nome', 'email', 'telefone'];
                 
                 //Verifica se o $valor estar e $colunasRetornaveis
@@ -105,7 +105,7 @@
                 $stmt->execute([':id' => $id]);
 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }//Fim do método ProcurarColunaNaTabela
+            }//Fim do método ProcurarAtributoEntidade
 
         }
     }
