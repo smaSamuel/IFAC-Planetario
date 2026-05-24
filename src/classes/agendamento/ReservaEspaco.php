@@ -2,14 +2,17 @@
 namespace web\classes\agendamento {
 
     use web\classes\usuario\clientes\ClientePessoaJuridica;
-    use web\classes\usuario\Monitor;
 
     class ReservaEspaco {
         private $_numVisitantesEsperados; //Como e uma reserva feita por uma instituição os visitantes não precisam ter cadastro 
+        private Horario $_horario;
         private ClientePessoaJuridica $_reponsavel;
-        public function __construct(ClientePessoaJuridica $reponsavel, $numVisitantesEsperados, Monitor $professor = null)
+        
+        public function __construct(ClientePessoaJuridica $reponsavel, $numVisitantesEsperados, Horario $horario)
         {   
             $this->_reponsavel = $reponsavel;
+            $this->_horario = $horario;
+
             $this->SetNumVisistantesEsperados($numVisitantesEsperados);
         }
 
@@ -19,11 +22,10 @@ namespace web\classes\agendamento {
                 $numVisitantesEsperados = intval($numVisitantesEsperados); //Converter para número
             }
 
-            if ($numVisitantesEsperados > 0 && $numVisitantesEsperados <= 30) {
+            if ($numVisitantesEsperados > 0 && $numVisitantesEsperados <= $this->_horario->GetNumeroMaximoVisitantes()) {
                 $this->_numVisitantesEsperados = $numVisitantesEsperados;
             } else {
-                //throw new \InvalidArgumentException('Escolha um valor que esteja entre 0 e 30');   
-                return false;    
+                throw new \InvalidArgumentException('Escolha um valor que esteja entre 0 e ' . $this->_horario->GetNumeroMaximoVisitantes());   
             }
         }//Fim do método SetNumVisistantesEsperados()
 
@@ -31,6 +33,11 @@ namespace web\classes\agendamento {
         public function GetResponsavel() {
             return $this->_reponsavel;
         }//Fim do método GetResponsavel()
+
+        //Método GetHorario()
+        public function GetHorario() {
+            return $this->_horario;
+        }//Fim do método GetHorario()
 
         public function __destruct() {  }
     }

@@ -1,8 +1,8 @@
 <?php
 
 namespace web\classes\agendamento {
-    use web\classes\usuario\monitores\MonitorAssistente;
-    use web\classes\usuario\monitores\MonitorProfessor;
+
+    use web\classes\usuario\Monitor;
 
     enum statusSolicitacao {
         case pendente;
@@ -13,12 +13,12 @@ namespace web\classes\agendamento {
     class SolicitacaoAssistencia
     {
         private statusSolicitacao $_status;
-        private MonitorAssistente $_assistente; //Variavel que referencia o assistente que esta sendo solicitado
-        private MonitorProfessor $_professor; //Variavel que referencia o professor que estar solicitando um assistente
+        private Monitor $_assistente; //Variavel que referencia o assistente que esta sendo solicitado
+        private Monitor $_professor; //Variavel que referencia o professor que estar solicitando um assistente
         private Horario $_horario; //Variavel que referencia ao horario que o monitor terá que oferecer assistencia
         private $_dataSolicitacao; //Guarda a data em que a solicitação foi feita (que foi instanciada) 
         
-        public function __construct(MonitorAssistente $assistente, MonitorProfessor $professor, Horario $horario) {
+        public function __construct(Monitor $assistente, Monitor $professor, Horario $horario) {
             $this->_status = statusSolicitacao::pendente;
             $this->_professor = $professor;
             $this->_assistente = $assistente;
@@ -28,13 +28,13 @@ namespace web\classes\agendamento {
         }
 
         //Método DefinirAssistente()
-        private function DefinirAssistente(MonitorAssistente $assistente) {
+        private function DefinirAssistente(Monitor $assistente) {
             //Definir que assistente recebeu essa solicitação
-            $this->_assistente->SetSolicitacaoAssistencia($this); //Adicionar essa solitação em sua lista
+            $this->_assistente->AddSolicitacaoAssistencia($this); //Adicionar essa solitação em sua lista
         }//Fim do método DefinirAssistente()
 
         //Método Aceitar()
-        public function Aceitar(MonitorAssistente $assistente)  {
+        public function Aceitar(Monitor $assistente)  {
             if ($assistente == $this->_assistente) { //Verifica se o usuário que aceitou a solicitação e o mesmo que foi solicitado
                 $this->_status = statusSolicitacao::aceita;
                 $this->GetHorario()->AddAssistente($assistente, $this->GetMonitorProfessor());
@@ -42,7 +42,7 @@ namespace web\classes\agendamento {
         }//Fim do método Aceitar()
 
         //Método Recusar()
-        public function Recusar(MonitorAssistente $assistente)  {
+        public function Recusar(Monitor $assistente)  {
             if ($assistente == $this->_assistente) { //Verifica se o usuário que recusou a solicitação e o mesmo que foi solicitado
                 $this->_status = statusSolicitacao::recusada;
             } 

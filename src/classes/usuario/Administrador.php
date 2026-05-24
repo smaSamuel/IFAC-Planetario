@@ -1,7 +1,8 @@
 <?php
 
 namespace web\classes\usuario {
-    use DateTime;
+    use web\utils\SetCpf;
+    use web\utils\SetIdade;
 
     class Administrador {
         private $_nome;
@@ -33,18 +34,13 @@ namespace web\classes\usuario {
 
         //Metodo SetIdade()
         protected function setIdade($dataNascimento) {
-            $dataNascimentoObj = DateTime::createFromFormat('d/m/Y', $dataNascimento);
-            $dataNascimentoDB = $dataNascimentoObj->format('Y-m-d'); //Formatando a data para o padrão do banco de dados
-            $dataAtual = new DateTime();
-            $idade = $dataAtual->diff($dataNascimentoObj);
-            $idade = $idade->y;
-            
-            if($idade > 17 && $idade < 120) {
-                $this->_idade = $idade;
-                $this->_dataNascimento = $dataNascimentoDB;
-            } else {
-                //throw new \InvalidArgumentException('Voce nao tem a idade minima para se registrar nesse site!');
-                return false;    
+            try {
+                $this->_idade = SetIdade::CalcularIdade($dataNascimento);
+                $this->_dataNascimento = SetIdade::FormartarDataNascimento($dataNascimento);
+            } catch (\InvalidArgumentException $e) {
+                throw $e;
+            } catch (\Exception $e) {
+                throw new \RuntimeException("Tivemos um pequeno problema, tente novamente.");
             }
         }//Fim metodo SetIdade()  
 
@@ -76,27 +72,13 @@ namespace web\classes\usuario {
         //Fim metodo setEmail()
         //Metodo setCPF()
         public function setCPF($cpf) {
-            $cpf = str_replace(['-', '.'], '', $cpf);
-
-            // verificar se foi informado o numero exato de digitos
-            if (strlen($cpf) != 11) { return false; }
-        
-            // verificar se foi informado uma sequencia de digitos iguais, 111.111.111-11
-            if (preg_match('/(\d)\1{10}/', $cpf))  { return false; }
-
-            // Faz o calculo para validar o CPF
-            for ($t = 9; $t < 11; $t++) {
-                for ($d = 0, $c = 0; $c < $t; $c++) {
-                    $d += $cpf[$c] * (($t + 1) - $c);
-                }
-                $d = ((10 * $d) % 11) % 10;
-                if ($cpf[$c] != $d) {
-                    //throw new \InvalidArgumentException("CPF inválido: $cpf"); 
-                    return false;    
-                }
+            try {
+                $this->_cpf = SetCpf::verificarValidade($cpf);
+            } catch (\InvalidArgumentException $e) {
+                throw $e;
+            } catch (\RuntimeException $e) {
+                throw new \RuntimeException("Tivemos um pequeno problema, tente novamente.");
             }
-            
-            $this->_cpf = hash_hmac('sha256', $cpf, getenv('HASH_SECRET_KEY'));
         }
         //Fim metodo setCPF()
     
@@ -135,6 +117,7 @@ namespace web\classes\usuario {
             return $this->_senha;
         }
         //Fim metodo getSenha()
+
         //Metodo __destruct()
         function __destruct() { }    
     }
