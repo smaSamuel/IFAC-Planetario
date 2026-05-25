@@ -6,15 +6,13 @@ namespace web\classes\usuario {
     {
         private $nome;
         private $email;
-        private $telefone;
         private $senha;
 
         //Método __construct()
-        public function __construct($nome, $email, $telefone, $senha)
+        public function __construct($nome, $email, $senha)
         {
             $this->SetNome($nome);
             $this->SetEmail($email);
-            $this->SetTelefone($telefone);
             $this->SetSenha($senha);
         } //Fim do método
 
@@ -34,20 +32,6 @@ namespace web\classes\usuario {
             $this->email = $email;
         } //Fim do método
 
-        //Método SetTelefone()
-        protected function SetTelefone($telefone)
-        {
-            $telefone = str_replace(['(', ')', '-', ' ', '/'], '', $telefone);
-
-            $valTel = '/^[1-9]{2}(9[0-9]{8}|[2-8][0-9]{7})$/';
-
-            if (preg_match($valTel, $telefone)) {
-                $this->telefone = $telefone;
-            } else {
-                throw new \InvalidArgumentException("Número de telefone inválido"); // Devolver erro
-            }
-        } //Fim do método SetTelefone()
-
         //Método SetSenha()
         public function SetSenha($senha) {
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
@@ -65,12 +49,6 @@ namespace web\classes\usuario {
         {
             return $this->email;
         } //Fim do método GetEmail
-
-        //Método GetTelefone()
-        public function GetTelefone()
-        {
-            return $this->telefone;
-        } //Fim do método GetTelefone()
 
         //Método GetSenha()
         public function GetSenha() {
