@@ -1,6 +1,7 @@
 <?php
 namespace web\classes\agendamento {
 
+    use DateTime;
     use web\classes\usuario\Monitor;
 
     enum StatusHorario {
@@ -14,16 +15,24 @@ namespace web\classes\agendamento {
         private StatusHorario $statusHorario;
 
         private Monitor $responsavel;
+        private DateTime $data;
         private array $assistentes;
         
         private $numMaximoVistante;
 
-        public function __construct(StatusHorario $statusHorario, Monitor $responsavel, $numeroMaximoVisitantes) {
-            
+        public function __construct($data, StatusHorario $statusHorario, Monitor $responsavel, $numeroMaximoVisitantes) {
+
+            $this->SetData($data);
             $this->SetStatusHorario($statusHorario);
             $this->SetResponsavel($responsavel);
             $this->SetNumeroMaximoVisitantes($numeroMaximoVisitantes);
         }
+
+        //Método SetData
+        public function SetData($data) {
+            $dataFormatada = DateTime::createFromFormat('d/m/Y', $data);
+            $this->data = $dataFormatada;
+        }//Fim do método SetData
 
         //Método SetStatusHorario
         public function SetStatusHorario($statusHorario) {
@@ -64,6 +73,11 @@ namespace web\classes\agendamento {
             return $this->responsavel;
         }
         //Fim do método GetReponsavel
+
+        //Método GetData
+        public function GetData() {
+            return $this->data;
+        }//Fim do método GetData
         
         //Método GetNumeroMaximoVisitantes
         public function GetNumeroMaximoVisitantes() {
