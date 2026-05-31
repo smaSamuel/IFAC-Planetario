@@ -24,11 +24,10 @@ namespace web\classes\agendamento {
             $this->_assistente = $assistente;
             $this->_horario = $horario;
             $this->_dataSolicitacao = date('d, m, Y');
-            $this->DefinirAssistente($assistente);
         }
 
         //Método DefinirAssistente()
-        private function DefinirAssistente(Monitor $assistente) {
+        private function DefinirAssistente() {
             //Definir que assistente recebeu essa solicitação
             $this->_assistente->AddSolicitacaoAssistencia($this); //Adicionar essa solitação em sua lista
         }//Fim do método DefinirAssistente()
