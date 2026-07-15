@@ -6,6 +6,7 @@ namespace web\classes\usuario\clientes {
 
     //Classe PessoaJuridica
     class ClientePessoaJuridica extends Usuario{
+        private $id;
         private $_cnpj;
         private $_localizacao;
 
@@ -16,6 +17,12 @@ namespace web\classes\usuario\clientes {
             $this-> setLocalizacao      ($localizacao);
             
             }//Fim do Método Construct
+
+
+        //Método SetId()
+        public function SetId($id) {
+            $this->id = $id;
+        }//Fim do método SetId()
 
         //Método validarCnpj
         protected function setCnpj($cnpj) {
@@ -41,6 +48,11 @@ namespace web\classes\usuario\clientes {
         public function GetUsuario() {
             return parent::class;
         }//Fim do método GetUsuario()
+
+        //Método GetId()
+        public function GetId(){
+            return $this->id;
+        }//Fim do método GetId()
 
     }//Fim da classe PessoaJuridica 
 

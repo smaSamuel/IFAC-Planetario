@@ -11,7 +11,7 @@ namespace web\classes\agendamento {
     }
 
     class Horario {
-
+        private $id;
         private StatusHorario $statusHorario;
 
         private Monitor $responsavel;
@@ -89,6 +89,11 @@ namespace web\classes\agendamento {
         public function GetAssistentes() {
             return $this->assistentes;
         }//Fim método GetAssistentes()
+
+        //Método GetId()
+        public function GetId() {
+            return $this->id;
+        }//Fim do método GetId()
 
         public function __destruct() {  }
     }

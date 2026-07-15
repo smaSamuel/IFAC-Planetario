@@ -6,14 +6,16 @@ namespace web\classes\usuario {
     {
         private $nome;
         private $email;
+        private $telefone;
         private $senha;
 
         //Método __construct()
-        public function __construct($nome, $email, $senha)
+        public function __construct($nome, $email, $telefone, $senha)
         {
             $this->SetNome($nome);
             $this->SetEmail($email);
             $this->SetSenha($senha);
+            $this->SetTelefone($telefone);
         } //Fim do método
 
         //Método __destruct()
@@ -31,6 +33,11 @@ namespace web\classes\usuario {
         {
             $this->email = $email;
         } //Fim do método
+
+        //Método SetTelefone()
+        protected function SetTelefone($telefone) {
+            $this->telefone = $telefone;
+        }//Fim do método SetTelefone()
 
         //Método SetSenha()
         public function SetSenha($senha) {
@@ -54,6 +61,11 @@ namespace web\classes\usuario {
         public function GetSenha() {
             return $this->senha;
         }//Fim do método GetSenha()
+
+        //Método GetTelefone()
+        public function GetTelefone(){
+            return $this->telefone;
+        }//Fim do método GetTelefone()
 
     }
 }

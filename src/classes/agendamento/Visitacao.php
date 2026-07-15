@@ -4,14 +4,16 @@
     use web\classes\usuario\clientes\ClientePessoaFisica;
 
         class Visitacao {
+            private $id;
             private Horario $horario;
-            private Array $visitantes = [];
+            private ClientePessoaFisica $visitante;
 
-            public function __construct(Horario $horario)
+            public function __construct(Horario $horario, ClientePessoaFisica $visitante)
             {
                 $this->horario = $horario;                      
+                $this->visitante = $visitante;
             }
-
+/*
 //Visitantes
             //Método AddVisitantes()
             public function AddVisitantes(ClientePessoaFisica $visitante) {
@@ -28,22 +30,27 @@
             }//Fim do método RemoverVisitantes()
 
 //Visitantes
-
+*/
 //Gets
+            //Método SetId()
+            public function SetId($id) {
+                $this->id = $id;
+            }//Fim do método SetId()
+
             //Método GetHorario()
             public function GetHorario() {
                 return $this->horario;
             }//Fim do método GetHorario()
-        
-            //Método GetNumVisitantes()
-            public function GetNumVisitantes() {
-                return count($this->visitantes);
-            }//Fim do método GetNumVisitantes()   
+
+            //Método GetId()
+            public function GetId(){
+                return $this->id;
+            }//Fim do método GetId()
             
-            //Método GetVisitantes()
-            public function GetVisitantes() {
-                return $this->visitantes;
-            }//Fim do método GetVisitantes()   
+            //Método GetVisitante()
+            public function GetVisitante() {
+                return $this->visitante;
+            }//Fim do método GetVisitante()   
 //Gets
 
             //Método __destruct()

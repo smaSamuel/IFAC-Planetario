@@ -21,16 +21,3 @@ use web\classes\usuario\Monitor;
     } catch (\RuntimeException $e) {
         return;
     }
-
-//Adicionando\Removendo um usuario da lista de visitantes
-    $usuario1 = new ClientePessoaFisica('andre', 'andre@gmail.com', '(75) 3131-6541', '13/01/2000', '753.202.429-64', 'forte');
-    $usuario2 = new ClientePessoaFisica('andre', 'andre@gmail.com', '(75) 3131-6541', '13/01/2000', '753.202.429-64', 'forte');
-    
-    $visitacao->AddVisitantes($usuario1);
-    $visitacao->AddVisitantes($usuario2);
-
-    echo $visitacao->GetNumVisitantes() . "\n";
-
-    $visitacao->RemoverVisitantes($usuario2);
-    
-    echo $visitacao->GetNumVisitantes() . "\n";

@@ -4,6 +4,7 @@ namespace web\classes\agendamento {
     use web\classes\usuario\clientes\ClientePessoaJuridica;
 
     class ReservaEspaco {
+        private $id;
         private $_numVisitantesEsperados; //Como e uma reserva feita por uma instituição os visitantes não precisam ter cadastro 
         private Horario $_horario;
         private ClientePessoaJuridica $_reponsavel;
@@ -15,6 +16,11 @@ namespace web\classes\agendamento {
 
             $this->SetNumVisistantesEsperados($numVisitantesEsperados);
         }
+
+        //Método SetId()
+        public function SetId($id) {
+            $this->id = $id;
+        }//Fim do método SetId()
 
         //Método SetNumVisistantesEsperados()
         public function SetNumVisistantesEsperados($numVisitantesEsperados) {
@@ -38,6 +44,11 @@ namespace web\classes\agendamento {
         public function GetHorario() {
             return $this->_horario;
         }//Fim do método GetHorario()
+
+        //Método GetId()
+        public function GetId(){
+            return $this->id;
+        }//Fim do método GetId()
 
         public function __destruct() {  }
     }

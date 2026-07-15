@@ -1,34 +1,30 @@
 <?php
     namespace web\repositories {
-
-    use web\classes\usuario\Administrador;
-    use web\includes\Database;
+    
     use PDO;
+    use web\classes\agendamento\ReservaEspaco;
+    use web\includes\Database;
     use web\Interfaces\Repository;
 
-        class AdministradorRepository implements Repository{
+        class reservaEspacoRepository implements Repository {
             private PDO $pdo;
 
             //Método __construct()
-            public function __construct()
-            {
+            public function __construct() {
                 $this->pdo = Database::GetBancoDadosInfos();
-            }//Fim do mtodo __construct()
+            }//Fim do método __construct()
 
             //Método CriarEntidade()
             public function CriarEntidade($classe) {
-                if ($classe instanceof Administrador) {
-                    $query = "INSERT INTO administradores (nome, email, telefone, dataNascimento, cpf, senha) VALUES (?, ?, ?, ?, ?, ?);";
+                if ($classe instanceof ReservaEspaco) {
+                    $query = "INSERT INTO reservaEspaco (id, id_horario, id_pessoaJuridica) VALUES (?, ?, ?);";
     
                     $stmt = $this->pdo->prepare($query);
 
                     $stmt->execute([
-                        $classe->GetNome(),
-                        $classe->GetEmail(),
-                        $classe->GetTelefone(),
-                        $classe->getDataNascimento(),
-                        $classe->getCPF(),
-                        $classe->GetSenha(),
+                        $classe->GetId(),
+                        $classe->GetHorario()->GetId(),
+                        $classe->GetResponsavel()->GetId(),
                     ]);
     
                     return $this->pdo->lastInsertId();
@@ -39,7 +35,7 @@
 
             //Método RemoverEntidade() 
             public function RemoverEntidade($id) {
-                $query = "DELETE FROM administradores WHERE id = :id;";
+                $query = "DELETE FROM reservaEspaco WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindParam(":id", $id);
@@ -48,24 +44,21 @@
 
             //Método AtualizarEntidade()
             public function AtualizarEntidade($id, $classe) {
-                if ($classe instanceof Administrador) {
+                if ($classe instanceof ReservaEspaco) {
                     $atualCadastro = $this->ProcurarEntidade($id);
     
-                    $query = "UPDATE administradores SET nome = :nome, email = :email, telefone = :telefone, senha = :senha WHERE id = :id;";
+                    $query = "UPDATE reservaEspaco SET id = :id, id_horario = :id_horario, id_pessoaJuridica = :id_pessoaJuridica WHERE id = :id;";
     
                     $stmt = $this->pdo->prepare($query);
                     $stmt->execute([
-                        ':id'           => $id,
-                        ':nome'         => $classe->GetNome() ?? $atualCadastro[0]["nome"],
-                        ':email'        => $classe->GetEmail() ?? $atualCadastro[0]["email"],
-                        ':telefone'     => $classe->GetTelefone() ?? $atualCadastro[0]["telefone"],
-                        ':senha'        => $classe->GetSenha() ?? $atualCadastro[0]["senha"],
+                        ':id'                 => $id,
+                        ':id_horario'         => $classe->GetHorario()->GetId() ?? $atualCadastro[0]["id_horario"],
+                        ':id_pessoaJuridica'  => $classe->GetResponsavel()->GetId() ?? $atualCadastro[0]["id_pessoaJuridica"],
                     ]);
     
                     /*
                         Aparentimente isso PODE tar erro, já que os métodos gets[...]() nunca retorna null
                         Entretando isso AINDA (e espero) não é um problema
-                        -01:28 da manhã 
                     */
                 } else {
                     return false;
@@ -74,7 +67,7 @@
 
             //Método ListarEntidade()
             public function ListarEntidade() {
-                $query = "SELECT id, nome, email, telefone FROM administradores;";
+                $query = "SELECT id, id_horario FROM reservaEspaco;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute();
@@ -84,7 +77,7 @@
 
             //Método ProcurarEntidade()
             public function ProcurarEntidade($id) {
-                $query = "SELECT * FROM administradores WHERE id = :id;";
+                $query = "SELECT * FROM reservaEspaco WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([':id' => $id]);
@@ -94,7 +87,7 @@
 
             //Método ProcurarAtributoEntidade()
             public function ProcurarAtributoEntidade($id, $valor) {
-                $colunasRetornaveis = ['id', 'nome', 'email', 'telefone'];
+                $colunasRetornaveis = ['id', 'id_horario', 'id_pessoaJuridica'];
                 
                 //Verifica se o $valor estar e $colunasRetornaveis
                 if (!in_array($valor, $colunasRetornaveis)) {
@@ -102,12 +95,14 @@
                     return false;
                 }
 
-                $query = "SELECT {$valor} FROM administradores WHERE id = :id;";
+                $query = "SELECT {$valor} FROM reservaEspaco WHERE id = :id;";
 
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([':id' => $id]);
 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }//Fim do método ProcurarAtributoEntidade
+
+
         }
     }

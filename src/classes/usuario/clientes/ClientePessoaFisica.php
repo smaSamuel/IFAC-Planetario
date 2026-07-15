@@ -7,6 +7,7 @@ namespace web\classes\usuario\clientes {
 
     //Classe PessoaFísica
     class ClientePessoaFisica extends Usuario  {
+        private $id;
         private $_idade;
         private $dataNascimento;
         private $_cpf;
@@ -31,6 +32,11 @@ namespace web\classes\usuario\clientes {
         }
         //Fim do método setIdade()
 
+        //Método SetId()
+        protected function SetId($id) {
+            $this->id = $id;
+        }//Fim do método SetId()
+
         //Metodo SetCPF()
         protected function SetCPF($cpf) {
             try {
@@ -41,6 +47,11 @@ namespace web\classes\usuario\clientes {
                 throw new \RuntimeException("Tivemos um pequeno problema, tente novamente.");
             }
         } //Fim do metodo SetCPF()
+
+        //Método GetId()
+        public function GetId() {
+            return $this->id;
+        }//Fim do método GetId()
         
         //Metodo getIdade()
         public function getIdade() {

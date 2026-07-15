@@ -12,6 +12,7 @@ namespace web\classes\agendamento {
 
     class SolicitacaoAssistencia
     {
+        private $id;
         private statusSolicitacao $_status;
         private Monitor $_assistente; //Variavel que referencia o assistente que esta sendo solicitado
         private Monitor $_professor; //Variavel que referencia o professor que estar solicitando um assistente
@@ -47,6 +48,11 @@ namespace web\classes\agendamento {
             } 
         }//Fim do método Recusar()
 
+        //Método SetId()
+        public function SetId($id) {
+            $this->id = $id;
+        }//Fim do método SetId()
+
         //Método GetStatus()
         public function GetStatus() {
             return $this->_status->name;
@@ -66,6 +72,11 @@ namespace web\classes\agendamento {
         public function GetHorario() {
             return $this->_horario;
         }//Fim do método GetHorario()
+
+        //Método GetId() 
+        public function GetId() {
+            return $this->id;
+        }//Fim do método GetId()
 
         //Método __destruct()
         public function __destruct() { }

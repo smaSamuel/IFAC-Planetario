@@ -4,7 +4,6 @@ namespace web\repositories {
 
     use PDO;
     use web\classes\agendamento\Horario;
-    use web\classes\usuario\Usuario;
     use web\includes\Database;
     use web\Interfaces\Repository;
 
@@ -27,8 +26,8 @@ namespace web\repositories {
                 $stmt = $this->pdo->prepare($query);
 
                 $stmt->execute([
-                    $classe->GetProfessor(),
-                    $classe->GetHorario(),
+                    $classe->GetReponsavel(),
+                    $classe->GetData(),
                 ]);
 
                 return $this->pdo->lastInsertId();
@@ -58,8 +57,8 @@ namespace web\repositories {
                 $stmt = $this->pdo->prepare($query);
                 $stmt->execute([
                     ':id'                 => $id,
-                    ':id_monitor'         => $classe->GetProfessor() ?? $atualCadastro[0]["id_monitor"],
-                    ':dataHorario'        => $classe->GetHorario() ?? $atualCadastro[0]["dataHorario"],
+                    ':id_monitor'         => $classe->GetReponsavel() ?? $atualCadastro[0]["id_monitor"],
+                    ':dataHorario'        => $classe->GetData() ?? $atualCadastro[0]["dataHorario"],
                 ]);
 
                 /*

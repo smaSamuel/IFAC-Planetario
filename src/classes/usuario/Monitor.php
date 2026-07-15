@@ -13,6 +13,7 @@ namespace web\classes\usuario {
 
     //Classe Monitor
     class Monitor extends Usuario {
+        private $id;
         private $_cpf;
         private $_idade;
         private $_dataNascimento;
@@ -39,6 +40,11 @@ namespace web\classes\usuario {
                 throw new \RuntimeException("Tivemos um pequeno problema, tente novamente.");
             }
         } //Fim do metodo SetCPF()
+
+        //Método SetId()
+        public function SetId($id) {
+            $this->id = $id;
+        }//Fim do método SetId()    
 
         //Metodo SetIdade()
         protected function SetIdade($dataNascimento) {
@@ -79,6 +85,11 @@ namespace web\classes\usuario {
     
 //Gets
         //metodos gets()
+        //Método GetId()
+        public function GetId() {
+            return $this->id;
+        }//Fim do método GetId()
+      
         //Método GetCPF()
         public function GetCPF() { 
             return $this->_cpf; 
