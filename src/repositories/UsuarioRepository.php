@@ -6,7 +6,7 @@
     use web\includes\Database;
     use web\Interfaces\Repository;
 
-        class UsuarioRepository implements Repository {
+        class UsuarioRepository extends Repository {
             private PDO $pdo;
 
             //Método __construct()
