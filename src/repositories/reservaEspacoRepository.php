@@ -6,7 +6,7 @@
     use web\includes\Database;
     use web\Interfaces\Repository;
 
-        class reservaEspacoRepository implements Repository {
+        class reservaEspacoRepository extends Repository {
             private PDO $pdo;
 
             //Método __construct()

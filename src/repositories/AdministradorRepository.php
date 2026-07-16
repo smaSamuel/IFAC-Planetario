@@ -6,7 +6,7 @@
     use PDO;
     use web\Interfaces\Repository;
 
-        class AdministradorRepository implements Repository{
+        class AdministradorRepository extends Repository{
             private PDO $pdo;
 
             //Método __construct()

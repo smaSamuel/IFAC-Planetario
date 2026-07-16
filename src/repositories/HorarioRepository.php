@@ -7,7 +7,7 @@ namespace web\repositories {
     use web\includes\Database;
     use web\Interfaces\Repository;
 
-    class HorarioRepository implements Repository
+    class HorarioRepository extends Repository
     {
         private PDO $pdo;
 

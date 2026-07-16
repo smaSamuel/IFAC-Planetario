@@ -6,7 +6,7 @@
     use web\classes\usuario\clientes\ClientePessoaFisica;
     use web\Interfaces\Repository;
 
-        class UsuarioPessoaFisicaRepository implements Repository {
+        class UsuarioPessoaFisicaRepository extends Repository {
             private PDO $pdo;
 
             //Método __construct()

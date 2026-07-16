@@ -6,7 +6,7 @@
     use PDO;
     use web\Interfaces\Repository;
 
-        class MonitorRepository implements Repository{
+        class MonitorRepository extends Repository{
             private PDO $pdo;
 
             //Método __construct()

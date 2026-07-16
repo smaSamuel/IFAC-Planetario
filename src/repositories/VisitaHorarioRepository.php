@@ -6,7 +6,7 @@ namespace web\repositories {
     use web\includes\Database;
     use web\Interfaces\Repository;
 
-        class VisitaHorarioRepository implements Repository {
+        class VisitaHorarioRepository extends Repository {
             private PDO $pdo;
 
             //Método __construct()
