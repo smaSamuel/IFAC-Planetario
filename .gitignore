@@ -1,3 +1,33 @@
+# Dependências do Composer
+/vendor/
+/src/vendor/
+composer.phar
+
+# Variáveis de ambiente (credenciais, senhas)
 .env
-vendor/
+.env.*
+!.env.example
+
+# Logs
 *.log
+storage/logs/*.log
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.nvim.lua
+
+# Docker
+docker-compose.override.yml
+
+# Dados persistentes do PostgreSQL (caso não use volume nomeado)
+db/data/
+
+# Arquivos temporários do PHP
+*.cache

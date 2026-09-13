@@ -1,0 +1,14 @@
+{
+    "name": "ifac/planetario",
+    "description": "sistema de agendamento para o planetario do IFAC",
+    "require": {
+        "vlucas/phpdotenv": "^5.7",
+        "nesbot/carbon": "^3.14",
+        "respect/validation": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
