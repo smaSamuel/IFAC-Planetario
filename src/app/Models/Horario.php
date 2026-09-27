@@ -49,7 +49,7 @@ class Horario {
         $this->horarioStatus = HorarioStatus::EmVisitacao;
     }
 
-    public function liberar() {
+    public function liberar() : void {
         # Método de transiçao entre status EmVisitacao ou Reservado para Livre
         
         # Verifica se o horario estar disponivel
