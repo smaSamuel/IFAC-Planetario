@@ -9,6 +9,7 @@ class ReservaEspaco {
     {    
         $this->id = $id;
         $this->idHorario = $idHorario;
+        $this->idReservador = $idReservador;
     }
 
     public function getId() : ?int {

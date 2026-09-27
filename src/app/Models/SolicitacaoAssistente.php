@@ -10,8 +10,8 @@ class SolicitacaoAssistente {
     {
         $this->id = $id;
         $this->idHorario = $idHorario;
-        $this->idEmissor = $idEmissor;
         $this->idAssistente = $idAssistente;
+        $this->idEmissor = $idEmissor;
     }
 
     public function getId() : ?int {
