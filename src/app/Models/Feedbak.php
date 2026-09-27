@@ -1,6 +1,6 @@
 <?php
 namespace App\Models;
-class Avaliacao {
+class Feedbak {
     private ?int $id;
     private int $idCliente;
     private string $avaliacao;
