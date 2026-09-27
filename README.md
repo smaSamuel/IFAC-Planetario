@@ -28,8 +28,8 @@ Sistema de agendamento de sessões para o planetário do IFAC, desenvolvido como
 
 1. Clone o repositório:
    ```bash
-   git clone <url-do-repositorio>
-   cd saep
+   git clone https://github.com/smaSamuel/SAEP
+   cd SAEP
    ```
 
 2. Crie um arquivo `.env` na raiz do projeto com as variáveis necessárias:
