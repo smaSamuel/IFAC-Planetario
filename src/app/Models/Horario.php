@@ -119,4 +119,20 @@ class Horario {
 
         return true;
     }
+
+    public function getId() : int {
+        return $this->id;
+    }
+
+    public function getComeco() : Carbon {
+        return $this->comeco;
+    }
+
+    public function getFim() : Carbon {
+        return $this->fim;
+    }
+
+    public function getHorarioStatus() : HorarioStatus {
+        return $this->horarioStatus;
+    }
 }
