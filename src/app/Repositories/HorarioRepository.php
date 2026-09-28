@@ -79,4 +79,17 @@ class HorarioRepository {
         
         return;
     }
+
+    public function deletarHorariosPassados() : void {
+        $diaAtual = Carbon::now()->toDateTimeString();
+        
+        $query = "DELETE FROM horario WHERE status = 'livre' AND fim < :diaAtual;";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            ":diaAtual" => $diaAtual,
+        ]);
+
+        return;
+    } 
 }
