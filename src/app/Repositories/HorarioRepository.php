@@ -30,7 +30,7 @@ class HorarioRepository {
         $query = "SELECT id, comeco, fim, status FROM horario WHERE id = :id;";
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([':id' => $id]);
+        $stmt->execute(['id' => $id]);
 
         $dados = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -47,9 +47,9 @@ class HorarioRepository {
         $stmt = $this->pdo->prepare($query);
 
         $stmt->execute([
-            ":comeco" => $horario->getComeco()->toDateTimeString(),
-            ":fim" => $horario->getFim()->toDateTimeString(),
-            ":status" => $horario->getHorarioStatus()->value,            
+            "comeco" => $horario->getComeco()->toDateTimeString(),
+            "fim" => $horario->getFim()->toDateTimeString(),
+            "status" => $horario->getHorarioStatus()->value,            
         ]);
         
         $id = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -61,9 +61,9 @@ class HorarioRepository {
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
-            ":comeco" => $horario->getComeco()->toDateTimeString(),
-            ":fim" => $horario->getFim()->toDateTimeString(),
-            ":status" => $horario->getHorarioStatus()->value,
+            "comeco" => $horario->getComeco()->toDateTimeString(),
+            "fim" => $horario->getFim()->toDateTimeString(),
+            "status" => $horario->getHorarioStatus()->value,
         ]);
         
         return;   
@@ -74,7 +74,7 @@ class HorarioRepository {
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
-            ":id" => $id,
+            "id" => $id,
         ]);
         
         return;
@@ -87,7 +87,7 @@ class HorarioRepository {
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
-            ":diaAtual" => $diaAtual,
+            "diaAtual" => $diaAtual,
         ]);
 
         return;
