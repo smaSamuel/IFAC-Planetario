@@ -42,17 +42,30 @@ class HorarioRepository {
     }
 
     public function inserir(Horario $horario): int {
-        $query = "INSERT INTO horario (comeco, fim, status) VALUES (?, ?, ?) RETURNING id;";
+        $query = "INSERT INTO horario (comeco, fim, status) VALUES :comeco, :fim, :status) RETURNING id;";
             
         $stmt = $this->pdo->prepare($query);
 
         $stmt->execute([
-            $horario->getComeco()->toDateTimeString(),
-            $horario->getFim()->toDateTimeString(),
-            $horario->getHorarioStatus()->value,            
+            ":comeco" => $horario->getComeco()->toDateTimeString(),
+            ":fim" => $horario->getFim()->toDateTimeString(),
+            ":status" => $horario->getHorarioStatus()->value,            
         ]);
         
         $id = $stmt->fetch(PDO::FETCH_ASSOC);
         return intval($id['id']);
     } 
+
+    public function atualizar(Horario $horario) : void {
+        $query = "UPDATE horario SET comeco = :comeco, fim = :fim, status = :status WHERE id = :id;";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            ":comeco" => $horario->getComeco()->toDateTimeString(),
+            ":fim" => $horario->getFim()->toDateTimeString(),
+            ":status" => $horario->getHorarioStatus()->value,
+        ]);
+        
+        return;   
+    }
 }
