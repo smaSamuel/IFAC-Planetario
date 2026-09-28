@@ -68,4 +68,15 @@ class HorarioRepository {
         
         return;   
     }
+
+    public function deletar(int $id) : void {
+        $query = "DELETE FROM horario WHERE id = :id;";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            ":id" => $id,
+        ]);
+        
+        return;
+    }
 }
