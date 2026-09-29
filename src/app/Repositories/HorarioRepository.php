@@ -42,7 +42,7 @@ class HorarioRepository {
     }
 
     public function inserir(Horario $horario): int {
-        $query = "INSERT INTO horario (comeco, fim, status) VALUES :comeco, :fim, :status) RETURNING id;";
+        $query = "INSERT INTO horario (comeco, fim, status) VALUES (:comeco, :fim, :status) RETURNING id;";
             
         $stmt = $this->pdo->prepare($query);
 
@@ -51,7 +51,6 @@ class HorarioRepository {
             "fim" => $horario->getFim()->toDateTimeString(),
             "status" => $horario->getHorarioStatus()->value,            
         ]);
-        
         $id = $stmt->fetch(PDO::FETCH_ASSOC);
         return intval($id['id']);
     } 
@@ -92,4 +91,17 @@ class HorarioRepository {
 
         return;
     } 
+
+    public function buscarHorariosDoDia(Carbon $data) : int {
+        $query = "SELECT id FROM horario WHERE comeco= :data;";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            "data" => $data->toTimeString(),
+        ]);
+        
+        $id = $stmt->fetchColumn();
+        
+        return intval($id);
+    }
 }
