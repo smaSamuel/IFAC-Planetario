@@ -120,7 +120,7 @@ class Horario {
         return true;
     }
 
-    public function getId() : int {
+    public function getId() : ?int {
         return $this->id;
     }
 
@@ -132,7 +132,7 @@ class Horario {
         return $this->fim;
     }
 
-    public function getHorarioStatus() : HorarioStatus {
+    public function getStatus() : HorarioStatus {
         return $this->horarioStatus;
     }
 }

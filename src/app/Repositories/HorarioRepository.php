@@ -5,7 +5,6 @@ namespace App\Repositories;
 
 use App\Exceptions\HorarioCorrompidoException;
 use App\Exceptions\HorarioIndisponivelException;
-use App\Exceptions\HorarioQueryException;
 use App\Models\Horario;
 use App\Models\HorarioStatus;
 use PDO;
@@ -51,7 +50,7 @@ class HorarioRepository {
         $stmt->execute([
             "comeco" => $horario->getComeco()->toDateTimeString(),
             "fim" => $horario->getFim()->toDateTimeString(),
-            "status" => $horario->getHorarioStatus()->value,            
+            "status" => $horario->getStatus()->value,            
         ]);
         $id = $stmt->fetchColumn();
         return intval($id);
@@ -68,7 +67,7 @@ class HorarioRepository {
         $stmt->execute([
             "comeco" => $horario->getComeco()->toDateTimeString(),
             "fim" => $horario->getFim()->toDateTimeString(),
-            "status" => $horario->getHorarioStatus()->value,
+            "status" => $horario->getStatus()->value,
             "id" => $horario->getId(),
         ]);
         
