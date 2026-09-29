@@ -31,3 +31,6 @@ db/data/
 
 # Arquivos temporários do PHP
 *.cache
+
+# Scripts de teste para o banco de dados
+/src/scripts
