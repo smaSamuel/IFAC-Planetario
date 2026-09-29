@@ -9,7 +9,6 @@ Sistema de agendamento de sessões para o planetário do IFAC, desenvolvido como
 - **PostgreSQL** — banco de dados relacional escolhido pelo suporte a *range types* e *exclusion constraints*, que ajudam a garantir a integridade dos agendamentos (evitando sobreposição de horários) diretamente no nível do banco, como camada final de proteção contra overbooking.
 - **Docker e Docker Compose** — orquestram os containers da aplicação (PHP + Apache), do banco de dados e do pgAdmin, garantindo um ambiente de desenvolvimento consistente e fácil de reproduzir.
 - **pgAdmin** — interface visual para administração e inspeção do banco PostgreSQL durante o desenvolvimento.
-- **GitHub Actions** — validação automática (`composer validate --strict`) e instalação de dependências a cada push/pull request na branch `master` (ver `.github/workflows/php.yml`).
 
 ### Bibliotecas em uso (via Composer)
 
